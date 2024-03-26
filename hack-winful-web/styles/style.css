@@ -36,4 +36,14 @@
   input[type="file"]::file-selector-button:active {
     background-color: #e5e7eb;
   }
+
+  input[type=text]{
+     border-radius:4px;
+  }
+  input[type=number]{
+    border-radius:4px;
+ }
+  select{
+    border-radius:4px;
+  }
 }
