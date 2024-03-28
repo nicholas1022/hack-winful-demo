@@ -9,17 +9,20 @@ spring:
     favicon:
       enabled: false
   datasource:
-    url:
-    username:
+    url: jdbc:postgresql://raja.db.elephantsql.com/xpjhgpxe
+    username: xpjhgpxe
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
   jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
 
 logging:
   level:
