@@ -2,8 +2,10 @@ package com.winful.ordsys.service;
 
 import com.winful.ordsys.dto.OrderDTO;
 import com.winful.ordsys.mapper.OrderMapper;
+import com.winful.ordsys.model.Order;
 import com.winful.ordsys.repository.OrderRepository;
 import com.winful.ordsys.repository.ProductRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -58,7 +60,12 @@ public class OrderService {
     }
 
     public List<OrderDTO> getOrders(String deliverDate) {
-        return orderRepository.findAllByDeliverDate(LocalDate.parse(deliverDate))
-            .stream().map(orderMapper::orderToOrderDTO).toList();
+        List<Order> orderList;
+        if (StringUtils.isBlank(deliverDate)) {
+            orderList = orderRepository.findAll();
+        } else {
+            orderList = orderRepository.findAllByDeliverDate(LocalDate.parse(deliverDate));
+        }
+        return orderList.stream().map(orderMapper::orderToOrderDTO).toList();
     }
 }
