@@ -1,0 +1,207 @@
+openapi: 3.0.3
+servers:
+  - url: http://localhost:8080/api
+info:
+  version: 1.0.0
+  title: Hackathon Winful
+tags:
+  - name: Product
+  - name: Order
+paths:
+  /product:
+    get:
+      tags:
+        - Product
+      summary: Get a product by ID
+      operationId: getProduct
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Product info
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/ProductDTO'
+    post:
+      tags:
+        - Product
+      summary: Create a product
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '../dto.yaml#/components/schemas/ProductDTO'
+      responses:
+        200:
+          description: product info
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/ProductDTO'
+    put:
+      tags:
+        - Product
+      summary: Update a product
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '../dto.yaml#/components/schemas/ProductDTO'
+      responses:
+        200:
+          description: Product info
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/ProductDTO'
+    delete:
+      tags:
+        - Product
+      summary: Delete a product
+      operationId: deleteProduct
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Product not found
+  /product/page:
+    get:
+      tags:
+        - Product
+      summary: Get a product page
+      operationId: getProducts
+      parameters:
+        - in: query
+          name: brand
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../dto.yaml#/components/schemas/ProductDTO'
+  /product/cfmOnHoldQty:
+    put:
+      tags:
+        - Product
+      summary: Confirm on hold quantity
+      operationId: confirmOnHoldQty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+  /order:
+    get:
+      tags:
+        - Order
+      summary: Get a order by ID
+      operationId: getOrder
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Order info
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/OrderDTO'
+    post:
+      tags:
+        - Order
+      summary: create case
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '../dto.yaml#/components/schemas/OrderDTO'
+      responses:
+        200:
+          description: Order info
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/OrderDTO'
+    put:
+      tags:
+        - Products
+      summary: update case
+      operationId: updateOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '../dto.yaml#/components/schemas/OrderDTO'
+      responses:
+        200:
+          description: Order info
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/OrderDTO'
+    delete:
+      tags:
+        - Order
+      summary: delete case
+      operationId: deleteOrder
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+  /order/page:
+    get:
+      tags:
+        - Order
+      summary: Get a order page
+      operationId: getOrders
+      parameters:
+        - in: query
+          name: deliverDate
+          schema:
+            type: string
+      responses:
+        200:
+          description: Order info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../dto.yaml#/components/schemas/OrderDTO'
