@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
 import Image from "next/image";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 
 const userList = ["user1", "user2", "user3", " user4"];
 const data: Item[] = [
@@ -66,6 +68,10 @@ export default function Page() {
   const [cart, setCart] = useState<Array<{ id: string; quantity: number }>>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [user, setUser] = useState<string>("");
+  const [brandList, setBrandList] = useState<string[]>([]);
+  const [tab, setTab] = useState<string>("");
+  const [displayItem, setDisplayItem] = useState<Item[]>([]);
+
   // Update the local storage when the cart changes
   useEffect(() => {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -81,6 +87,22 @@ export default function Page() {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+
+  // Get the brands of the items for the tabs
+  useEffect(() => {
+    const brandsSet: Set<string> = new Set();
+    data.forEach((item: Item) => {
+      brandsSet.add(item.brand);
+    });
+    const brandArr = Array.from(brandsSet);
+    setBrandList(brandArr);
+    setTab(brandArr[0]);
+  }, [data]);
+
+  useEffect(() => {
+    const filteredItems: Item[] = data.filter((item) => item.brand == tab);
+    setDisplayItem(filteredItems);
+  }, [tab]);
 
   function onQuantityChange(id: string, newQuantity: number) {
     // Remove the item if the new quantity turns to zero
@@ -145,8 +167,22 @@ export default function Page() {
             <p>&ensp;({totalQuantity})</p>
           </button>
         </div>
+
+        <Tabs
+          value={tab}
+          onChange={(e: React.SyntheticEvent, newValue: string) => {
+            setTab(newValue);
+          }}
+          variant='scrollable'
+          scrollButtons='auto'
+        >
+          {brandList.map((brand) => {
+            return <Tab value={brand} label={brand} wrapped />;
+          })}
+        </Tabs>
+
         <div className='grid grid-cols-1 sm: grid-cols-1 md:grid-cols-2 gap-4 col-span-3'>
-          {data.map((product) => {
+          {displayItem.map((product) => {
             // Initialize the order quantity to be 0
             let orderQuantity: number = 0;
             // Retrieve order order quanity from localstorage, update the order quantity from the localstorage data
