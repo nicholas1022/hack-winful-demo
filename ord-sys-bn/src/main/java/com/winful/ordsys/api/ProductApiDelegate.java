@@ -1,10 +1,12 @@
 package com.winful.ordsys.api;
 
 import com.winful.ordsys.dto.ProductDTO;
+import com.winful.ordsys.dto.ProductImgDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Generated;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.Optional;
  * A delegate to be called by the {@link ProductApiController}}.
  * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-25T22:50:24.337545-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-30T22:39:56.845970-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 public interface ProductApiDelegate {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -45,7 +47,7 @@ public interface ProductApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"onHoldQty\" : 1.4658129805029452, \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"photoLink\" : \"photoLink\", \"brand\" : \"brand\" }";
+                    String exampleString = "{ \"onHoldQty\" : 1.4658129805029452, \"imgUrl\" : \"imgUrl\", \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"brand\" : \"brand\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -79,7 +81,7 @@ public interface ProductApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"onHoldQty\" : 1.4658129805029452, \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"photoLink\" : \"photoLink\", \"brand\" : \"brand\" }";
+                    String exampleString = "{ \"onHoldQty\" : 1.4658129805029452, \"imgUrl\" : \"imgUrl\", \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"brand\" : \"brand\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -100,7 +102,7 @@ public interface ProductApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"onHoldQty\" : 1.4658129805029452, \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"photoLink\" : \"photoLink\", \"brand\" : \"brand\" }, { \"onHoldQty\" : 1.4658129805029452, \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"photoLink\" : \"photoLink\", \"brand\" : \"brand\" } ]";
+                    String exampleString = "[ { \"onHoldQty\" : 1.4658129805029452, \"imgUrl\" : \"imgUrl\", \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"brand\" : \"brand\" }, { \"onHoldQty\" : 1.4658129805029452, \"imgUrl\" : \"imgUrl\", \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"brand\" : \"brand\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -121,7 +123,30 @@ public interface ProductApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"onHoldQty\" : 1.4658129805029452, \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"photoLink\" : \"photoLink\", \"brand\" : \"brand\" }";
+                    String exampleString = "{ \"onHoldQty\" : 1.4658129805029452, \"imgUrl\" : \"imgUrl\", \"qty\" : 6.027456183070403, \"plu\" : 0, \"name\" : \"name\", \"brand\" : \"brand\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * POST /product/uploadImg : Upload a product&#39;s image
+     *
+     * @param img  (optional)
+     * @return Image uploaded successfully (status code 200)
+     *         or Invalid file type (status code 400)
+     *         or Internal server error (status code 500)
+     * @see ProductApi#uploadPrdImg
+     */
+    default ResponseEntity<ProductImgDTO> uploadPrdImg(MultipartFile img) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"msg\" : \"msg\", \"imgUrl\" : \"imgUrl\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

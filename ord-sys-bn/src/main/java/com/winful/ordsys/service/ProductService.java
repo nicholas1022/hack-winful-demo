@@ -1,6 +1,7 @@
 package com.winful.ordsys.service;
 
 import com.winful.ordsys.dto.ProductDTO;
+import com.winful.ordsys.dto.ProductImgDTO;
 import com.winful.ordsys.mapper.ProductMapper;
 import com.winful.ordsys.model.Product;
 import com.winful.ordsys.repository.ProductRepository;
@@ -10,9 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -21,10 +22,13 @@ public class ProductService {
 
     private ProductMapper productMapper;
 
+    private FirebaseStorageService firebaseStorageService;
+
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, FirebaseStorageService firebaseStorageService) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.firebaseStorageService = firebaseStorageService;
     }
 
     public ProductDTO saveProduct(ProductDTO productDTO) {
@@ -62,6 +66,14 @@ public class ProductService {
         if (idList != null && !idList.isEmpty()) {
             idList.forEach((id) -> productRepository.confirmOnHoldQty(id));
         }
+    }
+
+    public ProductImgDTO uploadPrdImg(MultipartFile img) {
+        String url = firebaseStorageService.uploadFile(img);
+        ProductImgDTO productImgDTO = new ProductImgDTO();
+        productImgDTO.setImgUrl(url);
+        productImgDTO.setMsg("Image uploaded successfully");
+        return  productImgDTO;
     }
 
 }

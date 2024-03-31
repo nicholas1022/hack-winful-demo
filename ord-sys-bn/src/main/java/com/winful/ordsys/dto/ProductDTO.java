@@ -10,7 +10,7 @@ import java.util.Objects;
  * ProductDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-25T14:48:21.210539-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-31T00:36:09.343895-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 public class ProductDTO {
 
   private Long plu;
@@ -23,7 +23,7 @@ public class ProductDTO {
 
   private Double onHoldQty;
 
-  private String photoLink;
+  private String imgUrl;
 
   public ProductDTO plu(Long plu) {
     this.plu = plu;
@@ -125,24 +125,24 @@ public class ProductDTO {
     this.onHoldQty = onHoldQty;
   }
 
-  public ProductDTO photoLink(String photoLink) {
-    this.photoLink = photoLink;
+  public ProductDTO imgUrl(String imgUrl) {
+    this.imgUrl = imgUrl;
     return this;
   }
 
   /**
-   * Get photoLink
-   * @return photoLink
+   * Get imgUrl
+   * @return imgUrl
   */
   
-  @Schema(name = "photoLink", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("photoLink")
-  public String getPhotoLink() {
-    return photoLink;
+  @Schema(name = "imgUrl", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("imgUrl")
+  public String getImgUrl() {
+    return imgUrl;
   }
 
-  public void setPhotoLink(String photoLink) {
-    this.photoLink = photoLink;
+  public void setImgUrl(String imgUrl) {
+    this.imgUrl = imgUrl;
   }
 
   @Override
@@ -159,12 +159,12 @@ public class ProductDTO {
         Objects.equals(this.brand, productDTO.brand) &&
         Objects.equals(this.qty, productDTO.qty) &&
         Objects.equals(this.onHoldQty, productDTO.onHoldQty) &&
-        Objects.equals(this.photoLink, productDTO.photoLink);
+        Objects.equals(this.imgUrl, productDTO.imgUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(plu, name, brand, qty, onHoldQty, photoLink);
+    return Objects.hash(plu, name, brand, qty, onHoldQty, imgUrl);
   }
 
   @Override
@@ -176,7 +176,7 @@ public class ProductDTO {
     sb.append("    brand: ").append(toIndentedString(brand)).append("\n");
     sb.append("    qty: ").append(toIndentedString(qty)).append("\n");
     sb.append("    onHoldQty: ").append(toIndentedString(onHoldQty)).append("\n");
-    sb.append("    photoLink: ").append(toIndentedString(photoLink)).append("\n");
+    sb.append("    imgUrl: ").append(toIndentedString(imgUrl)).append("\n");
     sb.append("}");
     return sb.toString();
   }

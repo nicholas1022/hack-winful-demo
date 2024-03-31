@@ -2,10 +2,12 @@ package com.winful.ordsys.api.impl;
 
 import com.winful.ordsys.api.ProductApiDelegate;
 import com.winful.ordsys.dto.ProductDTO;
+import com.winful.ordsys.dto.ProductImgDTO;
 import com.winful.ordsys.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -49,5 +51,10 @@ public class ProductApiDelegateImpl implements ProductApiDelegate {
     public ResponseEntity<Void> confirmOnHoldQty(List<Long> requestBody) {
         productService.confirmOnHoldQty(requestBody);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<ProductImgDTO> uploadPrdImg(MultipartFile img) {
+        return ResponseEntity.ok(productService.uploadPrdImg(img));
     }
 }

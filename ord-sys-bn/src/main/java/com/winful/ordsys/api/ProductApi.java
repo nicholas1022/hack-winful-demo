@@ -6,6 +6,7 @@
 package com.winful.ordsys.api;
 
 import com.winful.ordsys.dto.ProductDTO;
+import com.winful.ordsys.dto.ProductImgDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -16,16 +17,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.List;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-25T22:50:24.337545-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-30T22:39:56.845970-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "Product", description = "the Product API")
 public interface ProductApi {
@@ -206,6 +205,40 @@ public interface ProductApi {
         @Parameter(name = "ProductDTO", description = "") @Valid @RequestBody(required = false) ProductDTO productDTO
     ) {
         return getDelegate().updateProduct(productDTO);
+    }
+
+
+    /**
+     * POST /product/uploadImg : Upload a product&#39;s image
+     *
+     * @param img  (optional)
+     * @return Image uploaded successfully (status code 200)
+     *         or Invalid file type (status code 400)
+     *         or Internal server error (status code 500)
+     */
+    @Operation(
+        operationId = "uploadPrdImg",
+        summary = "Upload a product's image",
+        tags = { "Product" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Image uploaded successfully", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ProductImgDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid file type"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/product/uploadImg",
+        produces = { "application/json" },
+        consumes = { "multipart/form-data" }
+    )
+    
+    default ResponseEntity<ProductImgDTO> uploadPrdImg(
+        @Parameter(name = "img", description = "") @RequestPart(value = "img", required = false) MultipartFile img
+    ) {
+        return getDelegate().uploadPrdImg(img);
     }
 
 }

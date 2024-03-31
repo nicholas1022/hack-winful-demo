@@ -116,6 +116,28 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Order not found
+  /product/uploadImg:
+    post:
+      tags:
+        - Product
+      summary: Upload a product's image
+      operationId: uploadPrdImg
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                img:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: "Image uploaded successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '../dto.yaml#/components/schemas/ProductImgDTO'
   /order:
     get:
       tags:

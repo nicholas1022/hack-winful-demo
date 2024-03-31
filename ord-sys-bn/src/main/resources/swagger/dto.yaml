@@ -20,7 +20,14 @@ components:
         onHoldQty:
           type: number
           format: double
-        photoLink:
+        imgUrl:
+          type: string
+    ProductImgDTO:
+      type: object
+      properties:
+        msg:
+          type: string
+        imgUrl:
           type: string
     OrderDTO:
       type: object
