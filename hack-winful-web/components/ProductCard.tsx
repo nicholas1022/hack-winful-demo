@@ -53,6 +53,7 @@ export function ProductCard(props: ProductCardProps) {
       onQuantityChange(id, quantity);
     }
   }
+
   return (
     <div className='flex flex-col items-center px-8 py-6 gap-4 sm:px-12 md:px-18'>
       <div className='flex flex-col'>

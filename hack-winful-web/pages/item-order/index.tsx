@@ -65,14 +65,16 @@ const data: Item[] = [
 ];
 
 export default function Page() {
-  const [cart, setCart] = useState<Array<{ id: string; quantity: number }>>([]);
+  const [cart, setCart] = useState<
+    Array<{ id: string; quantity: number; price?: number }>
+  >([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [user, setUser] = useState<string>("");
   const [brandList, setBrandList] = useState<string[]>([]);
   const [tab, setTab] = useState<string>("");
   const [displayItem, setDisplayItem] = useState<Item[]>([]);
 
-  // Update the local storage when the cart changes
+  // Set up the shopping cart state after loading the localstorage
   useEffect(() => {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(cartLocalStorage);
@@ -156,13 +158,12 @@ export default function Page() {
               })}
             </select>
           </div>
-          <button className='bg-gray-300 hover:bg-gray-400 text-black-800 font-bold py-2 px-4 self-end rounded inline-flex items-center align-center'>
+          <button className='rounded py-2 px-4 bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 inline-flex items-center align-center'>
             <Image
               src={"/shopping-cart.svg"}
               width='30'
               height='10'
-              alt={"shopping-cart"}
-              className={"white"}
+              alt={"shopping cart"}
             />
             <p>&ensp;({totalQuantity})</p>
           </button>
