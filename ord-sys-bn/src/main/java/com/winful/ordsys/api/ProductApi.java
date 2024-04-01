@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.List;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-30T22:39:56.845970-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-31T19:52:06.090125-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "Product", description = "the Product API")
 public interface ProductApi {
@@ -121,6 +121,34 @@ public interface ProductApi {
 
 
     /**
+     * GET /product/brands : Get all product brands
+     *
+     * @return All product brand names (status code 200)
+     */
+    @Operation(
+        operationId = "getAllBrands",
+        summary = "Get all product brands",
+        tags = { "Product" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "All product brand names", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/product/brands",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<List<String>> getAllBrands(
+        
+    ) {
+        return getDelegate().getAllBrands();
+    }
+
+
+    /**
      * GET /product : Get a product by ID
      *
      * @param id  (optional)
@@ -213,8 +241,6 @@ public interface ProductApi {
      *
      * @param img  (optional)
      * @return Image uploaded successfully (status code 200)
-     *         or Invalid file type (status code 400)
-     *         or Internal server error (status code 500)
      */
     @Operation(
         operationId = "uploadPrdImg",
@@ -223,9 +249,7 @@ public interface ProductApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "Image uploaded successfully", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ProductImgDTO.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid file type"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            })
         }
     )
     @RequestMapping(

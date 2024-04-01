@@ -138,6 +138,21 @@ paths:
             application/json:
               schema:
                 $ref: '../dto.yaml#/components/schemas/ProductImgDTO'
+  /product/brands:
+    get:
+      tags:
+        - Product
+      summary: Get all product brands
+      operationId: getAllBrands
+      responses:
+        200:
+          description: All product brand names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /order:
     get:
       tags:

@@ -76,4 +76,8 @@ public class ProductService {
         return  productImgDTO;
     }
 
+    public List<String> getAllBrands() {
+        return productRepository.findAllDistinctBrand();
+    }
+
 }

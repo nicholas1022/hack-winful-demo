@@ -57,4 +57,9 @@ public class ProductApiDelegateImpl implements ProductApiDelegate {
     public ResponseEntity<ProductImgDTO> uploadPrdImg(MultipartFile img) {
         return ResponseEntity.ok(productService.uploadPrdImg(img));
     }
+
+    @Override
+    public ResponseEntity<List<String>> getAllBrands() {
+        return ResponseEntity.ok(productService.getAllBrands());
+    }
 }

@@ -16,7 +16,7 @@ import java.util.Optional;
  * A delegate to be called by the {@link ProductApiController}}.
  * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-30T22:39:56.845970-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-31T19:52:06.090125-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 public interface ProductApiDelegate {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -66,6 +66,26 @@ public interface ProductApiDelegate {
      * @see ProductApi#deleteProduct
      */
     default ResponseEntity<Void> deleteProduct(Long id) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * GET /product/brands : Get all product brands
+     *
+     * @return All product brand names (status code 200)
+     * @see ProductApi#getAllBrands
+     */
+    default ResponseEntity<List<String>> getAllBrands() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ \"\", \"\" ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -138,8 +158,6 @@ public interface ProductApiDelegate {
      *
      * @param img  (optional)
      * @return Image uploaded successfully (status code 200)
-     *         or Invalid file type (status code 400)
-     *         or Internal server error (status code 500)
      * @see ProductApi#uploadPrdImg
      */
     default ResponseEntity<ProductImgDTO> uploadPrdImg(MultipartFile img) {
