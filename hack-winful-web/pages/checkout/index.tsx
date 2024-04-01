@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { CheckoutCard } from "../../components/CheckoutCard";
 import ConfirmationModal from "../../components/ConfirmationModal";
 const data: Item[] = [
@@ -61,10 +61,16 @@ const data: Item[] = [
 ];
 
 export default function Page() {
+  // Contains items added to the shopping cart
   const [cart, setCart] = useState<
     Array<{ id: string; quantity: number; price?: number }>
   >([]);
+  // Total price of all items
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [companyName, setCompanyName] = useState<string>("");
+  const [contactName, setContactName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
 
   // Retrieve shopping cart information from localstorage
   useEffect(() => {
@@ -117,13 +123,15 @@ export default function Page() {
       updateCartItemQuantity(id, newQuantity);
     }
   }
+
+  // Update the order price of the item if the item is in the cart
   function onPriceChange(id: string, newPrice: number) {
-    // Update the order price of the item if the item is in the cart
     if (cart.find((item) => item.id == id)) {
       updateCartItemPrice(id, newPrice);
     }
   }
 
+  // Update the price for the items in the order if custom price applied
   function updateCartItemPrice(id: string, newPrice: number) {
     setCart((prevItems) =>
       prevItems.map((item) =>
@@ -164,29 +172,71 @@ export default function Page() {
             })}
           </div>
 
-          <div className='flex flex-col border-2 w-full h-40 py-8 px-4'>
-            <div className='flex flex-col gap-8'>
-              <div className='flex flex-row gap-4'>
-                <p className='font-bold'>Subtotal:</p>
+          <div className='flex flex-col border-2 w-full py-8 px-4 rounded bg-white'>
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-row gap-4 font-bold border-b-2 pb-4'>
+                <p>Subtotal:</p>
                 <p>${totalPrice}</p>
               </div>
-              <form className='flex justify-centre bg-white rounded'>
+              <form className='flex flex-col justify-centre rounded gap-4'>
                 <div className='inputGroup'>
-                  <p className='font-bold'>Item Name</p>
-                  {/* <input
+                  <p className='font-bold'>Company Name</p>
+                  <input
                     type='text'
-                    name='item name'
-                    id='item name'
-                    value={itemName}
+                    name='comapany name'
+                    id='company name'
+                    value={companyName}
                     onChange={(e) => {
-                      setItemName(e.currentTarget.value);
+                      setCompanyName(e.currentTarget.value);
                     }}
                     className='placeholder:text-gray-400'
-                    placeholder='e.g. 24 packs Lobster'
-                  /> */}
+                    placeholder='e.g. Sunny Seafood'
+                  />
+                </div>
+                <div className='inputGroup'>
+                  <p className='font-bold'>Contact Name</p>
+                  <input
+                    type='text'
+                    name='contact name'
+                    id='contact name'
+                    value={contactName}
+                    onChange={(e) => {
+                      setContactName(e.currentTarget.value);
+                    }}
+                    className='placeholder:text-gray-400'
+                    placeholder='e.g. John Doe'
+                  />
+                </div>
+                <div className='inputGroup'>
+                  <p className='font-bold'>Email</p>
+                  <input
+                    type='text'
+                    name='email'
+                    id='email'
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.currentTarget.value);
+                    }}
+                    className='placeholder:text-gray-400'
+                    placeholder='e.g. johndoe@gmail.com'
+                  />
+                </div>
+                <div className='inputGroup'>
+                  <p className='font-bold'>Address</p>
+                  <textarea
+                    name='address'
+                    id='address'
+                    value={address}
+                    onChange={(e) => {
+                      setAddress(e.currentTarget.value);
+                    }}
+                    className='placeholder:text-gray-400'
+                    placeholder='e.g. 76 Fairway Ave. Georgetown, ON L7G 9L8'
+                  />
                 </div>
               </form>
               <ConfirmationModal
+                buttonText={"Order"}
                 topic='Confirm Order'
                 description='Do you confirm the order?'
                 onClickConfirm={() => {}}

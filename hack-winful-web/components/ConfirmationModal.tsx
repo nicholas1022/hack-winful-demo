@@ -11,12 +11,12 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
 interface ConfirmationModalProps {
+  buttonText: string;
   topic: string;
   description: string;
   onClickConfirm: () => void;
@@ -26,7 +26,7 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { topic, description, onClickConfirm } = props;
+  const { buttonText, topic, description, onClickConfirm } = props;
 
   return (
     <div>
@@ -34,7 +34,7 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
         className='font-bold py-2 px-4 rounded-full w-full bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 '
         onClick={handleOpen}
       >
-        Confirm Order
+        {buttonText}
       </button>
       <Modal
         open={open}
@@ -53,8 +53,8 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
             <button className='btn btn-blue rounded' onClick={handleClose}>
               Cancel
             </button>
-            <button className='btn btn-blue rounded' onClick={handleOpen}>
-              Confirm Order
+            <button className='btn btn-blue rounded' onClick={() => {}}>
+              Confirm
             </button>
           </div>
         </Box>
