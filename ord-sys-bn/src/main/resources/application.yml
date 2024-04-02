@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: ordsys
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    favicon:
+      enabled: false
+  datasource:
+    url: jdbc:postgresql://raja.db.elephantsql.com/xpjhgpxe
+    username: xpjhgpxe
+    password:
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
+firebase:
+  bucket: hackathonwinful-63b46.appspot.com
+  private-key-file-path: src/main/resources/firebase/hackathonwinful-63b46-firebase-adminsdk-8k8qn-a84a8214e6.json
+  download-base-url: https://firebasestorage.googleapis.com/v0/b/hackathonwinful-63b46.appspot.com/o/%s?alt=media
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
