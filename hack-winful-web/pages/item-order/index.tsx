@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
+import { PageWrapper } from "../../components/Layout/PageWrapper";
 import Image from "next/image";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -140,24 +141,27 @@ export default function Page() {
   }
 
   return (
-    <main className={"bg-slate-50 w-full h-full"}>
-      <div className={"container py-10"}>
-        <div className='flex flex-row my-6 justify-between'>
-          <div className='flex flex-row items-center gap-4'>
-            <p>User:</p>
-            <select
-              name='user'
-              id='user'
-              value={user}
-              onChange={(e) => {
-                setUser(e.currentTarget.value);
-              }}
-            >
-              {userList.map((user) => {
-                return <option>{user}</option>;
-              })}
-            </select>
-          </div>
+    <PageWrapper>
+      <div className='flex flex-row my-6 justify-between'>
+        <div className='flex flex-row items-center gap-4'>
+          <p>User:</p>
+          <select
+            name='user'
+            id='user'
+            value={user}
+            onChange={(e) => {
+              setUser(e.currentTarget.value);
+            }}
+          >
+            {userList.map((user) => {
+              return <option>{user}</option>;
+            })}
+          </select>
+        </div>
+        <a
+          href='checkout'
+          className='block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6'
+        >
           <button className='rounded py-2 px-4 bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 inline-flex items-center align-center'>
             <Image
               src={"/shopping-cart.svg"}
@@ -167,51 +171,52 @@ export default function Page() {
             />
             <p>&ensp;({totalQuantity})</p>
           </button>
-        </div>
-
-        <Tabs
-          value={tab}
-          onChange={(e: React.SyntheticEvent, newValue: string) => {
-            setTab(newValue);
-          }}
-          variant='scrollable'
-          scrollButtons='auto'
-        >
-          {brandList.map((brand) => {
-            return <Tab value={brand} label={brand} wrapped />;
-          })}
-        </Tabs>
-
-        <div className='grid grid-cols-1 sm: grid-cols-1 md:grid-cols-2 gap-4 col-span-3'>
-          {displayItem.map((product) => {
-            // Initialize the order quantity to be 0
-            let orderQuantity: number = 0;
-            // Retrieve order order quanity from localstorage, update the order quantity from the localstorage data
-            cart.forEach((cartItem) => {
-              if (cartItem.id == product.id) {
-                orderQuantity = cartItem.quantity;
-              }
-            });
-            return (
-              <div className='flex flex-col border-black border-solid rounded border-2 justify-center'>
-                <ProductCard
-                  key={product.id}
-                  photo={product.photo}
-                  id={product.id}
-                  name={product.name}
-                  brand={product.brand}
-                  quantity={product.quantity}
-                  price={product.price}
-                  cartOrderQuantity={orderQuantity}
-                  onQuantityChange={(id: string, quantity: number) => {
-                    onQuantityChange(id, quantity);
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
+        </a>
       </div>
-    </main>
+
+      <Tabs
+        value={tab}
+        onChange={(e: React.SyntheticEvent, newValue: string) => {
+          setTab(newValue);
+        }}
+        variant='scrollable'
+        scrollButtons='auto'
+        className='pb-6'
+      >
+        {brandList.map((brand) => {
+          return <Tab value={brand} label={brand} wrapped />;
+        })}
+      </Tabs>
+
+      <div className='grid grid-cols-1 sm: grid-cols-1 md:grid-cols-2 gap-4 col-span-3'>
+        {displayItem.map((product) => {
+          // Initialize the order quantity to be 0
+          let orderQuantity: number = 0;
+          // Retrieve order order quanity from localstorage, update the order quantity from the localstorage data
+          cart.forEach((cartItem) => {
+            if (cartItem.id == product.id) {
+              orderQuantity = cartItem.quantity;
+            }
+          });
+          return (
+            <div className='flex flex-col rounded border-2 justify-center'>
+              <ProductCard
+                key={product.id}
+                photo={product.photo}
+                id={product.id}
+                name={product.name}
+                brand={product.brand}
+                quantity={product.quantity}
+                price={product.price}
+                cartOrderQuantity={orderQuantity}
+                onQuantityChange={(id: string, quantity: number) => {
+                  onQuantityChange(id, quantity);
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </PageWrapper>
   );
 }

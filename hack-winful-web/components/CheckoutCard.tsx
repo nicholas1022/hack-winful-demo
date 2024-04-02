@@ -61,75 +61,72 @@ export function CheckoutCard(props: CheckoutCardProps) {
   }
 
   return (
-    <div className='flex flex-row px-14 py-6 '>
-      <div className='col-span-1'>
-        <img
-          className='object-contain sm: max-w-xs md: max-w-sm lg: max-w-md'
-          src={photo}
-          alt={name}
-        />
-      </div>
-      <div className='flex-col w-full col-span-2'>
-        <div className='sm: flex flex-col justify-start items-end gap-2'>
-          <div className='flex flex-row gap-4'>
-            <p>ID:</p>
-            <p>{id}</p>
-          </div>
-          <div className='flex flex-row gap-4'>
-            <p>Name:</p>
-            <p>{name}</p>
-          </div>
-          <div className='flex flex-row gap-4'>
-            <p>Brand:</p>
-            <p>{brand}</p>
-          </div>
-          <div className='flex flex-row gap-4'>
-            <p>Quantity:</p>
-            <p>{quantity}</p>
-          </div>
-          <div className='flex flex-row gap-4 items-center'>
-            <p>Order Quantity:</p>
+    <div className='flex items-center px-14 py-6 gap-20 border-2 rounded sm: flex-col md:flex-row '>
+      <img
+        className='object-contain sm: max-w-xs md: max-w-sm lg: max-w-md'
+        src={photo}
+        alt={name}
+      />
+
+      <div className='sm: flex flex-col justify-start gap-2 w-full'>
+        <div className='flex flex-row gap-4'>
+          <p>ID:</p>
+          <p>{id}</p>
+        </div>
+        <div className='flex flex-row gap-4'>
+          <p>Name:</p>
+          <p>{name}</p>
+        </div>
+        <div className='flex flex-row gap-4'>
+          <p>Brand:</p>
+          <p>{brand}</p>
+        </div>
+        <div className='flex flex-row gap-4'>
+          <p>Quantity:</p>
+          <p>{quantity}</p>
+        </div>
+        <div className='flex flex-row gap-4 items-center'>
+          <p>Order Quantity:</p>
+          <input
+            type='number'
+            className='placeholder:text-gray-400 w-20'
+            placeholder='1'
+            value={orderQuantity}
+            onChange={(e) => {
+              onChangeQuantity(parseInt(e.currentTarget.value)); // Cannot input dot character into the text field
+            }}
+          />
+          {isShowQuantityWarning ? <QuantityWarningMessage /> : <></>}
+        </div>
+        <div className='flex flex-row gap-4 items-center'>
+          <p>Price:</p>
+          <div className='relative rounded-md'>
+            <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
+              <span className=' sm:text-sm'>$</span>
+            </div>
             <input
               type='number'
-              className='placeholder:text-gray-400 w-20'
-              placeholder='1'
-              value={orderQuantity}
+              name='price'
+              id='price'
+              className='block w-24 rounded-md border-0 py-2 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6'
+              placeholder='0.00'
+              aria-describedby='price-currency'
+              value={sellPrice}
               onChange={(e) => {
-                onChangeQuantity(parseInt(e.currentTarget.value)); // Cannot input dot character into the text field
+                if (e.currentTarget.value !== null) {
+                  onChangePrice(parseFloat(e.currentTarget.value)); // Cannot input dot character into the text field
+                }
               }}
             />
-            {isShowQuantityWarning ? <QuantityWarningMessage /> : <></>}
           </div>
-          <div className='flex flex-row gap-4 items-center'>
-            <p>Price:</p>
-            <div className='relative rounded-md'>
-              <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
-                <span className=' sm:text-sm'>$</span>
-              </div>
-              <input
-                type='number'
-                name='price'
-                id='price'
-                className='block w-24 rounded-md border-0 py-2 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6'
-                placeholder='0.00'
-                aria-describedby='price-currency'
-                value={sellPrice}
-                onChange={(e) => {
-                  if (e.currentTarget.value !== null) {
-                    onChangePrice(parseFloat(e.currentTarget.value)); // Cannot input dot character into the text field
-                  }
-                }}
-              />
-            </div>
-          </div>
-          {isShowPriceWarning ? <PriceWarningMessage /> : <></>}
-          <p
-            className='underline cursor-pointer'
-            onClick={() => onChangeQuantity(0)}
-          >
-            Remove
-          </p>
         </div>
+        {isShowPriceWarning ? <PriceWarningMessage /> : <></>}
+        <p
+          className='underline cursor-pointer'
+          onClick={() => onChangeQuantity(0)}
+        >
+          Remove
+        </p>
       </div>
     </div>
   );

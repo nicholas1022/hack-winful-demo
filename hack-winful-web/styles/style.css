@@ -15,6 +15,10 @@
   .inputGroup {
     @apply gap-2 flex flex-col
   }
+
+  html{
+    color: rgb(55 65 81);
+  }
   input[type="file"]::file-selector-button {
     border-radius: 4px;
     padding: 0 16px;

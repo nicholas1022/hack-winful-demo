@@ -1,4 +1,5 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { PageWrapper } from "../../components/Layout/PageWrapper";
 import { CheckoutCard } from "../../components/CheckoutCard";
 import ConfirmationModal from "../../components/ConfirmationModal";
 const data: Item[] = [
@@ -140,11 +141,27 @@ export default function Page() {
     );
   }
   return (
-    <main className={"bg-slate-50 w-full h-full"}>
-      <div className={"container py-10 "}>
-        <div className='grid grid-cols-3 gap-8'>
-          <div className='col-span-2'>
-            {cart.map((cartItem) => {
+    <PageWrapper>
+      <div className='flex flex-col sm:flex-col md:flex-col lg:grid grid-cols-3 gap-8'>
+        <div className='flex flex-col gap-4 col-span-2'>
+          {/* Check if there is anything in the shopping cart */}
+          {cart.length === 0 ? (
+            // Return 'nothing found' if nothing is inside
+            <div className='flex w-full h-full items-center justify-center'>
+              <div className='flex flex-col items-center gap-8'>
+                <img
+                  src={"/empty-shopping-cart.png"}
+                  alt={"empty-shopping-cart"}
+                  className='2-40 h-40'
+                />
+                <p className='text-3xl font-bold text-gray-600'>
+                  Oh no! Nothing found.{" "}
+                </p>
+              </div>
+            </div>
+          ) : (
+            // Return the list of items if something is inside
+            cart.map((cartItem) => {
               const matchedItem = data.find((item) => item.id === cartItem.id);
               if (matchedItem) {
                 return (
@@ -169,82 +186,82 @@ export default function Page() {
               } else {
                 return null; // If the item is not found, you may choose to handle it differently (e.g., show a message)
               }
-            })}
-          </div>
+            })
+          )}
+        </div>
 
-          <div className='flex flex-col border-2 w-full py-8 px-4 rounded bg-white'>
-            <div className='flex flex-col gap-4'>
-              <div className='flex flex-row gap-4 font-bold border-b-2 pb-4'>
-                <p>Subtotal:</p>
-                <p>${totalPrice}</p>
-              </div>
-              <form className='flex flex-col justify-centre rounded gap-4'>
-                <div className='inputGroup'>
-                  <p className='font-bold'>Company Name</p>
-                  <input
-                    type='text'
-                    name='comapany name'
-                    id='company name'
-                    value={companyName}
-                    onChange={(e) => {
-                      setCompanyName(e.currentTarget.value);
-                    }}
-                    className='placeholder:text-gray-400'
-                    placeholder='e.g. Sunny Seafood'
-                  />
-                </div>
-                <div className='inputGroup'>
-                  <p className='font-bold'>Contact Name</p>
-                  <input
-                    type='text'
-                    name='contact name'
-                    id='contact name'
-                    value={contactName}
-                    onChange={(e) => {
-                      setContactName(e.currentTarget.value);
-                    }}
-                    className='placeholder:text-gray-400'
-                    placeholder='e.g. John Doe'
-                  />
-                </div>
-                <div className='inputGroup'>
-                  <p className='font-bold'>Email</p>
-                  <input
-                    type='text'
-                    name='email'
-                    id='email'
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.currentTarget.value);
-                    }}
-                    className='placeholder:text-gray-400'
-                    placeholder='e.g. johndoe@gmail.com'
-                  />
-                </div>
-                <div className='inputGroup'>
-                  <p className='font-bold'>Address</p>
-                  <textarea
-                    name='address'
-                    id='address'
-                    value={address}
-                    onChange={(e) => {
-                      setAddress(e.currentTarget.value);
-                    }}
-                    className='placeholder:text-gray-400'
-                    placeholder='e.g. 76 Fairway Ave. Georgetown, ON L7G 9L8'
-                  />
-                </div>
-              </form>
-              <ConfirmationModal
-                buttonText={"Order"}
-                topic='Confirm Order'
-                description='Do you confirm the order?'
-                onClickConfirm={() => {}}
-              />
+        <div className='flex flex-col border-2 w-full py-8 px-4 rounded bg-white'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex flex-row gap-4 font-bold border-b-2 pb-4'>
+              <p>Subtotal:</p>
+              <p>${totalPrice}</p>
             </div>
+            <form className='flex flex-col justify-centre rounded gap-4'>
+              <div className='inputGroup'>
+                <p className='font-bold'>Company Name</p>
+                <input
+                  type='text'
+                  name='comapany name'
+                  id='company name'
+                  value={companyName}
+                  onChange={(e) => {
+                    setCompanyName(e.currentTarget.value);
+                  }}
+                  className='placeholder:text-gray-400'
+                  placeholder='e.g. Sunny Seafood'
+                />
+              </div>
+              <div className='inputGroup'>
+                <p className='font-bold'>Contact Name</p>
+                <input
+                  type='text'
+                  name='contact name'
+                  id='contact name'
+                  value={contactName}
+                  onChange={(e) => {
+                    setContactName(e.currentTarget.value);
+                  }}
+                  className='placeholder:text-gray-400'
+                  placeholder='e.g. John Doe'
+                />
+              </div>
+              <div className='inputGroup'>
+                <p className='font-bold'>Email</p>
+                <input
+                  type='text'
+                  name='email'
+                  id='email'
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.currentTarget.value);
+                  }}
+                  className='placeholder:text-gray-400'
+                  placeholder='e.g. johndoe@gmail.com'
+                />
+              </div>
+              <div className='inputGroup'>
+                <p className='font-bold'>Address</p>
+                <textarea
+                  name='address'
+                  id='address'
+                  value={address}
+                  onChange={(e) => {
+                    setAddress(e.currentTarget.value);
+                  }}
+                  className='placeholder:text-gray-400'
+                  placeholder='e.g. 76 Fairway Ave. Georgetown, ON L7G 9L8'
+                />
+              </div>
+            </form>
+            <ConfirmationModal
+              buttonText={"Order"}
+              topic='Confirm Order'
+              description='Do you confirm the order?'
+              onClickConfirm={() => {}}
+            />
           </div>
         </div>
       </div>
-    </main>
+    </PageWrapper>
   );
 }

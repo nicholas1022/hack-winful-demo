@@ -3,7 +3,8 @@ import {
   useMaterialReactTable,
   MRT_ColumnDef,
 } from "material-react-table";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
+import { PageWrapper } from "../../components/Layout/PageWrapper";
 
 //must be memoized or stable (useState, useMemo, defined outside of the component, etc.)
 
@@ -156,15 +157,8 @@ export default function Page() {
   });
 
   return (
-    <main className={"bg-slate-50 w-screen h-screen"}>
-      <div
-        className={
-          "container py-10"
-          // "container py-10 sm:py-15 px-10 md:py-20 px-20 lg:py-30 px-40 xl:px-60"
-        }
-      >
-        <MaterialReactTable table={table} />
-      </div>
-    </main>
+    <PageWrapper>
+      <MaterialReactTable table={table} />
+    </PageWrapper>
   );
 }
