@@ -41,7 +41,7 @@ export function PageWrapper(props: { children?: JSX.Element | JSX.Element[] }) {
               Manage Inventory
             </a>
             <a
-              href='order-list'
+              href='order'
               className='block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6'
             >
               Item Order
