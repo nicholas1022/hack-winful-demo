@@ -100,7 +100,7 @@
 							<configOptions>
 								<delegatePattern>true</delegatePattern>
 							</configOptions>
-							<skip>{openapi.skip}</skip>
+							<skip>${openapi.skip}</skip>
 						</configuration>
 					</execution>
 				</executions>
