@@ -18,7 +18,9 @@ public class Product extends AbstractAuditable{
 
     private Double onHoldQty;
 
-    private String photoLink;
+    private Double defaultPrice;
+
+    private String imgUrl;
 
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 //    private List<OrderDetail> orderDetails;
@@ -63,12 +65,12 @@ public class Product extends AbstractAuditable{
         this.onHoldQty = onHoldQty;
     }
 
-    public String getPhotoLink() {
-        return photoLink;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setPhotoLink(String photoLink) {
-        this.photoLink = photoLink;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
 //    public List<OrderDetail> getOrderDetails() {
@@ -78,4 +80,13 @@ public class Product extends AbstractAuditable{
 //    public void setOrderDetails(List<OrderDetail> orderDetails) {
 //        this.orderDetails = orderDetails;
 //    }
+
+
+    public Double getDefaultPrice() {
+        return defaultPrice;
+    }
+
+    public void setDefaultPrice(Double defaultPrice) {
+        this.defaultPrice = defaultPrice;
+    }
 }
