@@ -1,4 +1,5 @@
 import { PageWrapper } from "../../components/Layout/PageWrapper";
+
 const data: Order[] = [
   {
     id: "1",
@@ -236,6 +237,7 @@ const data: Order[] = [
     ],
   },
 ];
+
 export default function Page() {
   return (
     <PageWrapper>

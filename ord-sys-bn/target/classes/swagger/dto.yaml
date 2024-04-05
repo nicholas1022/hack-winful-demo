@@ -1,0 +1,71 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Hackathon Winful
+components:
+  schemas:
+    ProductDTO:
+      type: object
+      properties:
+        plu:
+          type: integer
+          format: int64
+        name:
+          type: string
+        brand:
+          type: string
+        qty:
+          type: number
+          format: double
+        onHoldQty:
+          type: number
+          format: double
+        imgUrl:
+          type: string
+    ProductImgDTO:
+      type: object
+      properties:
+        msg:
+          type: string
+        imgUrl:
+          type: string
+    OrderDTO:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        contactName:
+          type: string
+        companyName:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        deliverDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum:
+            - confirmed
+            - delivered
+        orderDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetailDTO'
+    OrderDetailDTO:
+      type: object
+      properties:
+        orderDetailId:
+          type: integer
+          format: int64
+        product:
+          $ref: '#/components/schemas/ProductDTO'
+        qty:
+          type: number
+          format: double
+        price:
+          type: number
+          format: double

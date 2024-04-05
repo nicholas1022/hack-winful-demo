@@ -72,7 +72,20 @@ export default function Page() {
   const [contactName, setContactName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-
+  
+  async function fetchInfo (){
+    try{
+        const result = await fetch('http://localhost:8080/api/product/page', {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const resultJson = await result.json();
+        console.log(resultJson)
+    } catch(err){
+      console.log('error',err)
+    }
+     
+  }
   // Retrieve shopping cart information from localstorage
   useEffect(() => {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
