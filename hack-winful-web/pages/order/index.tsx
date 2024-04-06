@@ -263,6 +263,22 @@ export default function Page() {
     }
   }
 
+  async function changeStatus(orderId: string) {
+    try {
+      const result = await fetch(
+        `http://localhost:8080/api/order?$id={orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const resultJson = await result.json();
+      console.log(resultJson);
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
   function onDone(id: string) {
     const indexToRemove = orders.findIndex((order) => order.orderId === id);
 
@@ -275,7 +291,7 @@ export default function Page() {
       ];
       setOrders(updatedOrders);
     }
-
+    changeStatus(id);
     // call api to change the status
   }
 

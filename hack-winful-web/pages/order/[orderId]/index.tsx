@@ -15,7 +15,9 @@ export default function Page() {
   }, [router.query.orderId]);
 
   useEffect(() => {
-    fetchInfo();
+    if (orderId) {
+      fetchInfo();
+    }
   }, [orderId]);
 
   async function fetchInfo() {
@@ -23,7 +25,7 @@ export default function Page() {
       const result = await fetch(
         `http://localhost:8080/api/order?id=${orderId}`,
         {
-          method: "GET"
+          method: "GET",
         }
       );
       if (!result.ok) {
@@ -31,6 +33,7 @@ export default function Page() {
       }
       const resultJson = await result.json();
       setData(resultJson);
+      console.log(resultJson);
     } catch (err) {
       console.log("error", err);
     }
@@ -75,8 +78,8 @@ export default function Page() {
               <td className='border border-slate-700 p-2'>
                 {item.product.name}
               </td>
-              <td className='border border-slate-700 p-2 justify-center'>
-                {item.orderQuantity}
+              <td className='border border-slate-700 p-2 items-center'>
+                {item.qty}
               </td>
             </tr>
           ))}

@@ -37,8 +37,13 @@ export default function Page() {
 
   async function uploadImg() {
     try {
+      if (!photo) {
+        throw new Error("Photo is undefined");
+      }
+
       const formData = new FormData();
       formData.append("img", photo);
+
       const result = await fetch(
         "http://localhost:8080/api/product/uploadImg",
         {
@@ -46,9 +51,11 @@ export default function Page() {
           body: formData,
         }
       );
+
       if (!result.ok) {
         throw new Error("Failed to upload photo");
       }
+
       return result;
     } catch (err) {
       console.log("error", err);
