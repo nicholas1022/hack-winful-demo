@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Generated;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-25T14:48:21.210539-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-04-06T00:29:16.910561-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 @Controller
-@CrossOrigin
 @RequestMapping("${openapi.hackathonWinful.base-path:/api}")
+@CrossOrigin
 public class OrderApiController implements OrderApi {
 
     private final OrderApiDelegate delegate;

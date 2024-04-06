@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.List;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-25T14:48:21.210539-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-04-06T00:29:16.910561-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "Order", description = "the Order API")
 public interface OrderApi {
@@ -147,6 +147,34 @@ public interface OrderApi {
         @Parameter(name = "deliverDate", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "deliverDate", required = false) String deliverDate
     ) {
         return getDelegate().getOrders(deliverDate);
+    }
+
+
+    /**
+     * PUT /order/delivered : Change the order status to delivered
+     *
+     * @param id  (optional)
+     * @return Invalid ID supplied (status code 400)
+     *         or Order not found (status code 404)
+     */
+    @Operation(
+        operationId = "orderDelivered",
+        summary = "Change the order status to delivered",
+        tags = { "Product" },
+        responses = {
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/order/delivered"
+    )
+    
+    default ResponseEntity<Void> orderDelivered(
+        @Parameter(name = "id", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "id", required = false) Long id
+    ) {
+        return getDelegate().orderDelivered(id);
     }
 
 

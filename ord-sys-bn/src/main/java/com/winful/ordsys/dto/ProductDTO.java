@@ -10,7 +10,7 @@ import java.util.Objects;
  * ProductDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-31T00:36:09.343895-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-04-04T22:45:09.320133-04:00[America/Toronto]", comments = "Generator version: 7.4.0")
 public class ProductDTO {
 
   private Long plu;
@@ -22,6 +22,8 @@ public class ProductDTO {
   private Double qty;
 
   private Double onHoldQty;
+
+  private Double defaultPrice;
 
   private String imgUrl;
 
@@ -125,6 +127,26 @@ public class ProductDTO {
     this.onHoldQty = onHoldQty;
   }
 
+  public ProductDTO defaultPrice(Double defaultPrice) {
+    this.defaultPrice = defaultPrice;
+    return this;
+  }
+
+  /**
+   * Get defaultPrice
+   * @return defaultPrice
+  */
+  
+  @Schema(name = "defaultPrice", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("defaultPrice")
+  public Double getDefaultPrice() {
+    return defaultPrice;
+  }
+
+  public void setDefaultPrice(Double defaultPrice) {
+    this.defaultPrice = defaultPrice;
+  }
+
   public ProductDTO imgUrl(String imgUrl) {
     this.imgUrl = imgUrl;
     return this;
@@ -159,12 +181,13 @@ public class ProductDTO {
         Objects.equals(this.brand, productDTO.brand) &&
         Objects.equals(this.qty, productDTO.qty) &&
         Objects.equals(this.onHoldQty, productDTO.onHoldQty) &&
+        Objects.equals(this.defaultPrice, productDTO.defaultPrice) &&
         Objects.equals(this.imgUrl, productDTO.imgUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(plu, name, brand, qty, onHoldQty, imgUrl);
+    return Objects.hash(plu, name, brand, qty, onHoldQty, defaultPrice, imgUrl);
   }
 
   @Override
@@ -176,6 +199,7 @@ public class ProductDTO {
     sb.append("    brand: ").append(toIndentedString(brand)).append("\n");
     sb.append("    qty: ").append(toIndentedString(qty)).append("\n");
     sb.append("    onHoldQty: ").append(toIndentedString(onHoldQty)).append("\n");
+    sb.append("    defaultPrice: ").append(toIndentedString(defaultPrice)).append("\n");
     sb.append("    imgUrl: ").append(toIndentedString(imgUrl)).append("\n");
     sb.append("}");
     return sb.toString();

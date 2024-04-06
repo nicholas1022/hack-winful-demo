@@ -31,7 +31,6 @@ public class OrderService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public OrderDTO saveOrder(OrderDTO orderDTO) {
-//        List<ProductDTO> productDTOList = new LinkedList<>();
         if (orderDTO.getOrderDetails() != null && !orderDTO.getOrderDetails().isEmpty()) {
             orderDTO.getOrderDetails().forEach((od) -> {
                 if (od.getProduct() != null && od.getProduct().getPlu() != null && od.getQty() != null) {
@@ -43,6 +42,7 @@ public class OrderService {
                 }
             });
         }
+        orderDTO.setStatus(OrderDTO.StatusEnum.CONFIRMED);
         return orderMapper.orderToOrderDTO(orderRepository.save(orderMapper.oderDTOtoOrder(orderDTO)));
     }
 
@@ -62,10 +62,23 @@ public class OrderService {
     public List<OrderDTO> getOrders(String deliverDate) {
         List<Order> orderList;
         if (StringUtils.isBlank(deliverDate)) {
-            orderList = orderRepository.findAll();
+            orderList = orderRepository.findAllByStatus(OrderDTO.StatusEnum.CONFIRMED);
         } else {
-            orderList = orderRepository.findAllByDeliverDate(LocalDate.parse(deliverDate));
+            orderList = orderRepository.findAllByDeliverDateAndStatus(LocalDate.parse(deliverDate), OrderDTO.StatusEnum.CONFIRMED);
         }
         return orderList.stream().map(orderMapper::orderToOrderDTO).toList();
+    }
+
+    @Transactional
+    public void orderDelivered(Long id) {
+        if (!orderRepository.existsById(id)) throw new RuntimeException("ID NOT FOUND");
+        Order order = orderRepository.findById(id).get();
+        if (order.getStatus().equals(OrderDTO.StatusEnum.DELIVERED)) throw new RuntimeException("Already delivered");
+        orderRepository.updateStatus(id, OrderDTO.StatusEnum.DELIVERED);
+        if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+            order.getOrderDetails().forEach(orderDetail -> {
+                productRepository.confirmOnHoldQty(orderDetail.getProduct().getPlu(), orderDetail.getQty());
+            });
+        }
     }
 }
