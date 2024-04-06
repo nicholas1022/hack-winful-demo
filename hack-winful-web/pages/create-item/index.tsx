@@ -35,21 +35,42 @@ export default function Page() {
     }
   }
 
-  async function createItem() {
+  async function uploadImg() {
     try {
       const formData = new FormData();
-      formData.append("name", itemName);
-      formData.append("brand", brand === "Other" ? newBrand : brand);
-      formData.append("quantity", quantity.toString());
-      formData.append("price", price.toString());
-      if (photo) {
-        formData.append("photo", photo);
-      }
-
-      const result = await fetch("http://localhost:8080/api/product", {
-        method: "POST",
-        body: formData,
+      formData.append('img', photo);
+      const result = await fetch('http://localhost:8080/api/product/uploadImg', {
+        method: 'POST',
+        body: formData
       });
+      if (!result.ok) {
+        throw new Error("Failed to upload photo");
+      }
+      return result;
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  async function createItem() {
+    try {
+
+      const imgUploadRes = await uploadImg();
+      const imgUploadJson = await imgUploadRes?.json();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: itemName,
+                                brand: brand === "Other" ? newBrand : brand,
+                                defaultPrice: price,
+                                qty: quantity,
+                                imgUrl: imgUploadJson.imgUrl
+                              })
+      };        
+
+      const result = await fetch('http://localhost:8080/api/product', requestOptions);
+
+      console.log(result);                      
       if (!result.ok) {
         throw new Error("Failed to create item");
       }
@@ -99,6 +120,23 @@ export default function Page() {
     }
   }
 
+  // function handleSubmit(e: React.FormEvent<HTMLInputElement>) {
+  //   e.preventDefault();
+  //   console.log("submit");
+  //   const requestOptions = {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ name: itemName,
+  //                            brand: newBrand === "" ? newBrand : brand,
+  //                            defaultPrice: price,
+  //                            qty: quantity,
+  //                            imgUrl: photo
+  //                          })
+  //   };
+  //   fetch('http://localhost:8080/api/product', requestOptions)
+  //       .then(response => response.json());
+  // }
+
   return (
     <PageWrapper>
       <form
@@ -110,6 +148,7 @@ export default function Page() {
           <section className="py-5 w-full flex justify-start flex-col gap-8">
             <div className="inputGroup">
               <p className="font-bold">Item Name</p>
+
               <input
                 type="text"
                 name="item name"
@@ -204,6 +243,9 @@ export default function Page() {
           <button type="submit" className="btn btn-blue">
             Create
           </button>
+
+          {/* <button className='btn btn-blue' type="submit">Create</button> */}
+
         </div>
       </form>
     </PageWrapper>
