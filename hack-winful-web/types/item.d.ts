@@ -1,8 +1,9 @@
 interface Item {
-  id: string;
+  plu: string;
   name: string;
   brand: string;
-  quantity: number;
-  photo: string;
-  price: number;
+  qty: number;
+  imgUrl: string;
+  defaultPrice: number;
+  onHoldQty: number;
 }

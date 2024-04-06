@@ -3,10 +3,13 @@ import { MaterialReactTable, useMaterialReactTable, MRT_ColumnDef } from 'materi
 import { PageWrapper } from '../../components/Layout/PageWrapper';
 
 interface Item {
-    id: string;
+    plu: string;
     name: string;
     brand: string;
-    quantity: number;
+    qty: number;
+    onHoldQty: number;
+    defaultPrice: number;
+    imgUrl: string
 }
 
 export default function Page() {
@@ -22,13 +25,31 @@ export default function Page() {
                 throw new Error('Failed to fetch data');
             }
             const resultJson = await result.json();
-            const products = resultJson.map((product: { plu: { toString: () => any; }; name: any; brand: any; qty: any; }) => ({
+            const products = resultJson.map((product: { plu: { toString: () => any; }; name: string; brand: string; qty: number; defaultPrice: number; onHoldQty: number; imgUrl: string;}) => ({
                 id: product.plu.toString(),
                 name: product.name,
                 brand: product.brand,
                 quantity: product.qty,
+                defaultPrice: product.defaultPrice,
+                onHoldQty: product.onHoldQty,
+                imgUrl: product.imgUrl
             }));
             setProducts(products);
+        } catch (err) {
+            console.log('error', err);
+        }
+    }
+
+    async function saveProducts(values: any) {
+        try {
+            const result = await fetch('http://localhost:8080/api/product', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values)
+            });
+            if (!result.ok) {
+                throw new Error('Failed to fetch data');
+            }
         } catch (err) {
             console.log('error', err);
         }
@@ -63,6 +84,18 @@ export default function Page() {
             enableHiding: false,
             enableColumnFilter: false,
         },
+        {
+            accessorKey: 'onHoldQty',
+            header: 'On Hold Qty',
+            enableHiding: false,
+            enableColumnFilter: false,
+        },
+        {
+            accessorKey: 'defaultPrice',
+            header: 'Price',
+            enableHiding: false,
+            enableColumnFilter: false,
+        }
     ] as MRT_ColumnDef<Item>[];
 
     const table = useMaterialReactTable({
@@ -73,7 +106,16 @@ export default function Page() {
         editDisplayMode: 'row',
         initialState: { showColumnFilters: true },
         onEditingRowSave: ({ table, values }) => {
-            console.log(values);
+            const product = products.find((p) => p.plu === values.plu);
+            if (product) {
+                product.plu = values.id;
+                product.brand = values.brand;
+                product.name = values.name;
+                product.defaultPrice = values.defaultPrice;
+                product.qty = values.quantity;
+                product.onHoldQty = values.onHoldQty;
+            }
+            saveProducts(product);
             table.setEditingRow(null);
         },
     });
