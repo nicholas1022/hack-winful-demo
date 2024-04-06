@@ -32,8 +32,12 @@ public class ProductService {
     }
 
     public ProductDTO saveProduct(ProductDTO productDTO) {
-        if (productDTO.getOnHoldQty() == null) productDTO.setOnHoldQty(0.0);
-        if (productDTO.getQty() == null) productDTO.setQty(0.0);
+        if (productDTO.getOnHoldQty() == null) {
+            productDTO.setOnHoldQty(0.0);
+        }
+        if (productDTO.getQty() == null) {
+            productDTO.setQty(0.0);
+        }
         Product product = productMapper.productDTOtoProduct(productDTO);
         Product savedProduct = productRepository.save(product);
         return productMapper.productToProductDTO(savedProduct);

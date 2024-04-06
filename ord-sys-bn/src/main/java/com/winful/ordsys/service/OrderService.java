@@ -77,7 +77,9 @@ public class OrderService {
         orderRepository.updateStatus(id, OrderDTO.StatusEnum.DELIVERED);
         if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
             order.getOrderDetails().forEach(orderDetail -> {
-                productRepository.confirmOnHoldQty(orderDetail.getProduct().getPlu(), orderDetail.getQty());
+                if (orderDetail.getProduct() != null && orderDetail.getQty() != null) {
+                    productRepository.confirmOnHoldQty(orderDetail.getProduct().getPlu(), orderDetail.getQty());
+                }
             });
         }
     }
