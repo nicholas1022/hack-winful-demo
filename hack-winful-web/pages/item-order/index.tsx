@@ -155,7 +155,7 @@ export default function Page() {
               name={product.name}
               brand={product.brand}
               quantity={product.qty}
-              price={product.price}
+              price={product.defaultPrice}
               cartOrderQuantity={product.onHoldQty}
               onQuantityChange={(id: string, quantity: number) => {
                 onQuantityChange(id, quantity);
