@@ -1,7 +1,7 @@
 export function PageWrapper(props: { children?: JSX.Element | JSX.Element[] }) {
   const { children } = props;
   return (
-    <main className={"bg-slate-50 w-full h-full"}>
+    <main className={"bg-slate-50 w-full min-h-screen h-full"}>
       <nav className='flex items-center justify-between flex-wrap bg-blue-500 p-6'>
         <div className='flex items-center flex-shrink-0 text-white mr-6'>
           <span className='font-semibold text-xl tracking-tight'>
@@ -44,7 +44,7 @@ export function PageWrapper(props: { children?: JSX.Element | JSX.Element[] }) {
               href='order'
               className='block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6'
             >
-              Item Order
+              Order List
             </a>
           </div>
         </div>

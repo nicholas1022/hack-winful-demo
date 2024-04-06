@@ -263,6 +263,29 @@ export default function Page() {
     }
   }
 
+  async function changeStatus(orderId: string) {
+    try {
+      const result = await fetch(
+        `http://localhost:8080/api/order/delivered?id=${orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (!result.ok) {
+        throw new Error("Failed to change status");
+      }
+
+      // Check if the response body is not empty
+      const text = await result.text();
+      const resultJson = text ? JSON.parse(text) : null;
+      console.log(resultJson);
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
   function onDone(id: string) {
     const indexToRemove = orders.findIndex((order) => order.orderId === id);
 
@@ -275,7 +298,7 @@ export default function Page() {
       ];
       setOrders(updatedOrders);
     }
-
+    changeStatus(id);
     // call api to change the status
   }
 
@@ -286,7 +309,6 @@ export default function Page() {
           <tr>
             <th className='border border-slate-600'>Order ID</th>
             <th className='border border-slate-600'>Company Name</th>
-            <th className='border border-slate-600'>Delivery Date</th>
           </tr>
         </thead>
         <tbody>
@@ -297,11 +319,10 @@ export default function Page() {
                 <td className='border border-slate-700 p-2'>
                   {order.companyName}
                 </td>
-                <td className='border border-slate-700 p-2'>{order.date}</td>
-                <td className='p-2'>
+                <td className='flex flex-row p-2 gap-2 items-center'>
                   <a
                     className='underline cursor-pointer'
-                    href='/single-order/{}'
+                    href={`/order/${order.orderId}`}
                   >
                     Details
                   </a>

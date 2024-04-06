@@ -87,6 +87,7 @@ export default function Page() {
   useEffect(() => {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(cartLocalStorage);
+    console.log(cartLocalStorage);
   }, []);
 
   // useEffect(() => {
@@ -96,9 +97,9 @@ export default function Page() {
   // Save order into localstorage
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
+    console.log("cart", cart);
   }, [cart]);
 
-  // Define your useEffect hook
   useEffect(() => {
     // Define a function to update cart with default prices
     const updateCartWithDefaultPrices = () => {
@@ -108,32 +109,25 @@ export default function Page() {
         if (cartItem.price === undefined) {
           // Find the corresponding item in the items list (assuming it's called 'items')
           const defaultItem = data.find(
-            (item) => item.plu === cartItem.product.plu
+            (item) => item.plu == cartItem.product.plu
           );
+
           // If the item is found, update its price in the cart
           if (defaultItem) {
-            return { ...cartItem, price: defaultItem.price };
+            return { ...cartItem, price: defaultItem.defaultPrice };
           }
         }
         // If the item already has a price or if the default item is not found, return the original item
         return cartItem;
       });
-
+      console.log(updatedCart);
       // Update the cart state with the updatedCart
-      setCart(updatedCart);
+      // setCart(updatedCart);
     };
 
     // Call the function to update cart with default prices when the component mounts
     updateCartWithDefaultPrices();
   }, [cart, data]); // Make sure to include all dependencies of the effect
-
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
-
-  useEffect(() => {
-    fetchInfo();
-  }, []);
 
   async function fetchInfo() {
     try {
@@ -151,6 +145,11 @@ export default function Page() {
     }
   }
 
+  useEffect(() => {
+    fetchInfo();
+    console.log(data);
+  }, []);
+
   // Calculate final price
   useEffect(() => {
     let sum = 0;
@@ -162,7 +161,7 @@ export default function Page() {
           (item) => item.plu === cartItem.product.plu
         );
         if (matchedItem) {
-          sum = sum + cartItem.qty * matchedItem.price;
+          sum = sum + cartItem.qty * matchedItem.defaultPrice;
         }
       }
     });
@@ -216,7 +215,7 @@ export default function Page() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contactName: companyName,
+          contactName: contactName,
           companyName: companyName,
           email: email,
           address: address,
@@ -233,6 +232,11 @@ export default function Page() {
   function onConfirm() {
     makeOrder();
     localStorage.removeItem("cart");
+    setCompanyName("");
+    setContactName("");
+    setEmail("");
+    setAddress("");
+    setCart([]);
   }
 
   return (
@@ -258,8 +262,9 @@ export default function Page() {
             // Return the list of items if something is inside
             cart.map((cartItem) => {
               const matchedItem = data.find(
-                (item) => item.plu === cartItem.product.plu
+                (item) => item.plu == cartItem.product.plu
               );
+
               if (matchedItem) {
                 return (
                   <CheckoutCard
@@ -270,7 +275,7 @@ export default function Page() {
                     quantity={matchedItem.qty}
                     orderQuantity={cartItem.qty}
                     photo={matchedItem.imgUrl}
-                    price={matchedItem.price}
+                    price={matchedItem.defaultPrice}
                     newPrice={cartItem.price} // Pass the new price if the price is amended
                     onQuantityChange={(plu: string, quantity: number) => {
                       onQuantityChange(plu, quantity);
@@ -349,14 +354,14 @@ export default function Page() {
                   placeholder='e.g. 76 Fairway Ave. Georgetown, ON L7G 9L8'
                 />
               </div>{" "}
-              <div className='inputGroup'>
+              {/* <div className='inputGroup'>
                 <p className='font-bold'>Delivery Date</p>
-                {/* <DatePicker
+                <DatePicker
                   label='Controlled picker'
                   value={deliveryDate}
                   onChange={(e) => setDeliveryDate(e.currentTarget.value)}
-                /> */}
-              </div>
+                />
+              </div> */}
             </form>
             <ConfirmationModal
               buttonText={"Order"}

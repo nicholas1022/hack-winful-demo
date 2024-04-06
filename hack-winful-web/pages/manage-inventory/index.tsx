@@ -45,6 +45,27 @@ export default function Page() {
     }
   }
 
+  // Not Yet FINISH!
+  // async function editItem() {
+  //   try {
+  //     const result = await fetch("http://localhost:8080/api/product", {
+  //       method: "PUT",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         contactName: contactName,
+  //         companyName: companyName,
+  //         email: email,
+  //         address: address,
+  //         orderDetails: cart,
+  //       }),
+  //     });
+  //     const resultJson = await result.json();
+  //     console.log(resultJson);
+  //   } catch (err) {
+  //     console.log("error", err);
+  //   }
+  // }
+
   useEffect(() => {
     fetchProducts();
   }, []); // fetch products on component mount
