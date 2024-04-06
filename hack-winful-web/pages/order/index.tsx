@@ -266,13 +266,20 @@ export default function Page() {
   async function changeStatus(orderId: string) {
     try {
       const result = await fetch(
-        `http://localhost:8080/api/order?$id={orderId}`,
+        `http://localhost:8080/api/order/delivered?id=${orderId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
         }
       );
-      const resultJson = await result.json();
+
+      if (!result.ok) {
+        throw new Error("Failed to change status");
+      }
+
+      // Check if the response body is not empty
+      const text = await result.text();
+      const resultJson = text ? JSON.parse(text) : null;
       console.log(resultJson);
     } catch (err) {
       console.log("error", err);

@@ -354,14 +354,14 @@ export default function Page() {
                   placeholder='e.g. 76 Fairway Ave. Georgetown, ON L7G 9L8'
                 />
               </div>{" "}
-              <div className='inputGroup'>
+              {/* <div className='inputGroup'>
                 <p className='font-bold'>Delivery Date</p>
-                {/* <DatePicker
+                <DatePicker
                   label='Controlled picker'
                   value={deliveryDate}
                   onChange={(e) => setDeliveryDate(e.currentTarget.value)}
-                /> */}
-              </div>
+                />
+              </div> */}
             </form>
             <ConfirmationModal
               buttonText={"Order"}
