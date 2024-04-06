@@ -68,7 +68,7 @@ export default function Page() {
     if (newQuantity === 0) {
       removeCartItem(id);
     }
-    if (cart.find((item) => item.product.plu === id)) {
+    if (cart.find((item) => item.product?.plu === id)) {
       updateCartItemQuantity(id, newQuantity);
     } else {
       addCartItem(id);
@@ -81,13 +81,13 @@ export default function Page() {
   }
 
   function removeCartItem(id: string) {
-    setCart((prevCart) => prevCart.filter((item) => item.product.plu !== id));
+    setCart((prevCart) => prevCart.filter((item) => item.product?.plu !== id));
   }
 
   function updateCartItemQuantity(id: string, newQuantity: number) {
     setCart((prevItems) =>
       prevItems.map((item) =>
-        item.product.plu === id ? { ...item, qty: newQuantity } : item
+        item.product?.plu === id ? { ...item, qty: newQuantity } : item
       )
     );
   }
@@ -151,7 +151,7 @@ export default function Page() {
       <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 col-span-3'>
         {displayItem.map((product, index) => {
           const cartItem = cart.find(
-            (item) => item.product.plu === product.plu
+            (item) => item.product?.plu === product.plu
           );
           const cartQuantity = cartItem ? cartItem.qty : 0;
           // console.log(product);

@@ -71,12 +71,12 @@ export default function Page() {
         </thead>
         <tbody>
           {orderDetails?.map((item: OrderItemInfo) => (
-            <tr key={item.product.plu}>
+            <tr key={item.product?.plu}>
               <td className='border border-slate-700 p-2'>
-                {item.product.plu}
+                {item.product?.plu}
               </td>
               <td className='border border-slate-700 p-2'>
-                {item.product.name}
+                {item.product?.name}
               </td>
               <td className='border border-slate-700 p-2 items-center'>
                 {item.qty}
