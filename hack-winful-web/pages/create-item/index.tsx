@@ -25,7 +25,7 @@ export default function Page() {
       }
       const resultJson = await result.json();
       const brandsSet = new Set<string>();
-      resultJson.forEach((product: { brand: string; }) => {
+      resultJson.forEach((product: { brand: string }) => {
         brandsSet.add(product.brand);
       });
       const brands = Array.from(brandsSet);
@@ -38,11 +38,14 @@ export default function Page() {
   async function uploadImg() {
     try {
       const formData = new FormData();
-      formData.append('img', photo);
-      const result = await fetch('http://localhost:8080/api/product/uploadImg', {
-        method: 'POST',
-        body: formData
-      });
+      formData.append("img", photo);
+      const result = await fetch(
+        "http://localhost:8080/api/product/uploadImg",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       if (!result.ok) {
         throw new Error("Failed to upload photo");
       }
@@ -54,23 +57,26 @@ export default function Page() {
 
   async function createItem() {
     try {
-
       const imgUploadRes = await uploadImg();
       const imgUploadJson = await imgUploadRes?.json();
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: itemName,
-                                brand: brand === "Other" ? newBrand : brand,
-                                defaultPrice: price,
-                                qty: quantity,
-                                imgUrl: imgUploadJson.imgUrl
-                              })
-      };        
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: itemName,
+          brand: brand === "Other" ? newBrand : brand,
+          defaultPrice: price,
+          qty: quantity,
+          imgUrl: imgUploadJson.imgUrl,
+        }),
+      };
 
-      const result = await fetch('http://localhost:8080/api/product', requestOptions);
+      const result = await fetch(
+        "http://localhost:8080/api/product",
+        requestOptions
+      );
 
-      console.log(result);                      
+      console.log(result);
       if (!result.ok) {
         throw new Error("Failed to create item");
       }
@@ -90,7 +96,7 @@ export default function Page() {
     }
   }
 
-  function handleSubmit(event: { preventDefault: () => void; }) {
+  function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault(); // Prevent the default form submission
     createItem(); // Call createItem function to send the data to the API
   }
@@ -140,32 +146,32 @@ export default function Page() {
   return (
     <PageWrapper>
       <form
-        className="flex justify-centre py-14 bg-white md:px-16 lg:px-20 xl:px-25 rounded"
+        className='flex justify-centre py-14 bg-white md:px-16 lg:px-20 xl:px-25 rounded'
         onSubmit={handleSubmit}
       >
-        <div className="w-full flex justify-start flex-col">
-          <p className="text-3xl font-bold">Create Items</p>
-          <section className="py-5 w-full flex justify-start flex-col gap-8">
-            <div className="inputGroup">
-              <p className="font-bold">Item Name</p>
+        <div className='w-full flex justify-start flex-col'>
+          <p className='text-3xl font-bold'>Create Items</p>
+          <section className='py-5 w-full flex justify-start flex-col gap-8'>
+            <div className='inputGroup'>
+              <p className='font-bold'>Item Name</p>
 
               <input
-                type="text"
-                name="item name"
-                id="item name"
+                type='text'
+                name='item name'
+                id='item name'
                 value={itemName}
                 onChange={(e) => {
                   setItemName(e.currentTarget.value);
                 }}
-                className="placeholder:text-gray-400"
-                placeholder="e.g. 24 packs Lobster"
+                className='placeholder:text-gray-400'
+                placeholder='e.g. 24 packs Lobster'
               />
             </div>
-            <div className="inputGroup">
-              <p className="font-bold">Brand</p>
+            <div className='inputGroup'>
+              <p className='font-bold'>Brand</p>
               <select
-                name="brand"
-                id="brand"
+                name='brand'
+                id='brand'
                 value={brand}
                 onChange={(e) => {
                   setBrand(e.currentTarget.value);
@@ -177,12 +183,12 @@ export default function Page() {
               </select>
             </div>
             {brand === "Other" ? (
-              <div className="inputGroup">
-                <p className="font-bold">Please specify</p>
+              <div className='inputGroup'>
+                <p className='font-bold'>Please specify</p>
                 <input
-                  type="text"
-                  name="new brand name"
-                  id="new brand name"
+                  type='text'
+                  name='new brand name'
+                  id='new brand name'
                   value={newBrand}
                   onChange={(e) => {
                     setNewBrand(e.currentTarget.value);
@@ -192,45 +198,45 @@ export default function Page() {
             ) : (
               <></>
             )}
-            <div className="inputGroup">
-              <p className="font-bold">Quantity</p>
+            <div className='inputGroup'>
+              <p className='font-bold'>Quantity</p>
               <input
-                type="number"
-                name="quantity"
-                id="quantity"
+                type='number'
+                name='quantity'
+                id='quantity'
                 value={quantity}
                 onChange={(e) => {
                   onChangeQuantity(parseInt(e.currentTarget.value, 10));
                 }}
               />
             </div>
-            <div className="inputGroup">
-              <p className="font-bold">Price</p>
-              <div className="relative mt-2 rounded-md">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <span className=" sm:text-sm">$</span>
+            <div className='inputGroup'>
+              <p className='font-bold'>Price</p>
+              <div className='relative mt-2 rounded-md'>
+                <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
+                  <span className=' sm:text-sm'>$</span>
                 </div>
                 <input
-                  type="string"
-                  name="price"
-                  id="price"
-                  className="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6"
-                  placeholder="0.00"
-                  aria-describedby="price-currency"
+                  type='string'
+                  name='price'
+                  id='price'
+                  className='block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6'
+                  placeholder='0.00'
+                  aria-describedby='price-currency'
                   value={price}
                   onChange={(e) => {
                     onChangePrice(parseFloat(e.currentTarget.value)); // Cannot input dot character into the text field
                   }}
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"></div>
+                <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'></div>
               </div>
             </div>
-            <div className="inputGroup">
-              <p className="font-bold">Photo</p>
+            <div className='inputGroup'>
+              <p className='font-bold'>Photo</p>
               <input
-                id="item photo"
-                type="file"
-                name="item photo"
+                id='item photo'
+                type='file'
+                name='item photo'
                 onChange={(e) => {
                   // Make sure there is File in the FileList
                   if (e.target.files != null) {
@@ -240,12 +246,11 @@ export default function Page() {
               />
             </div>
           </section>
-          <button type="submit" className="btn btn-blue">
+          <button type='submit' className='btn btn-blue'>
             Create
           </button>
 
           {/* <button className='btn btn-blue' type="submit">Create</button> */}
-
         </div>
       </form>
     </PageWrapper>

@@ -8,7 +8,9 @@ import Tabs from "@mui/material/Tabs";
 const userList = ["user1", "user2", "user3", "user4"];
 
 export default function Page() {
-  const [cart, setCart] = useState<Array<{ id: string; quantity: number; price?: number }>>([]);
+  const [cart, setCart] = useState<
+    Array<{ product: { plu: string }; qty: number; price?: number }>
+  >([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [user, setUser] = useState<string>("");
   const [brandList, setBrandList] = useState<string[]>([]);
@@ -22,14 +24,15 @@ export default function Page() {
 
   async function fetchInfo() {
     try {
-      const result = await fetch('http://localhost:8080/api/product/page', {
+      const result = await fetch("http://localhost:8080/api/product/page", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
       if (!result.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error("Failed to fetch data");
       }
       const resultJson = await result.json();
+      console.log(resultJson);
       setData(resultJson);
 
       const brandsSet: Set<string> = new Set();
@@ -40,7 +43,7 @@ export default function Page() {
       setBrandList(brandArr);
       setTab(brandArr[0]);
     } catch (err) {
-      console.log('error', err)
+      console.log("error", err);
     }
   }
 
@@ -50,7 +53,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    setTotalQuantity(cart.reduce((total, item) => total + item.quantity, 0));
+    setTotalQuantity(cart.reduce((total, item) => total + item.qty, 0));
   }, [cart]);
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export default function Page() {
     if (newQuantity === 0) {
       removeCartItem(id);
     }
-    if (cart.find((item) => item.id === id)) {
+    if (cart.find((item) => item.product.plu === id)) {
       updateCartItemQuantity(id, newQuantity);
     } else {
       addCartItem(id);
@@ -74,17 +77,17 @@ export default function Page() {
   }
 
   function addCartItem(id: string) {
-    setCart([...cart, { id: id, quantity: 1 }]);
+    setCart([...cart, { product: { plu: id }, qty: 1 }]);
   }
 
   function removeCartItem(id: string) {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+    setCart((prevCart) => prevCart.filter((item) => item.product.plu !== id));
   }
 
   function updateCartItemQuantity(id: string, newQuantity: number) {
     setCart((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
+        item.product.plu === id ? { ...item, qty: newQuantity } : item
       )
     );
   }
@@ -146,23 +149,33 @@ export default function Page() {
       </Tabs>
 
       <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 col-span-3'>
-        {displayItem.map((product, index) => (
-          <div className='flex flex-col rounded border-2 justify-center' key={index}>
-            <ProductCard
-              key={product.plu}
-              photo={product.imgUrl}
-              id={product.plu.toString()}
-              name={product.name}
-              brand={product.brand}
-              quantity={product.qty}
-              price={product.defaultPrice}
-              cartOrderQuantity={product.onHoldQty}
-              onQuantityChange={(id: string, quantity: number) => {
-                onQuantityChange(id, quantity);
-              }}
-            />
-          </div>
-        ))}
+        {displayItem.map((product, index) => {
+          const cartItem = cart.find(
+            (item) => item.product.plu === product.plu
+          );
+          const cartQuantity = cartItem ? cartItem.qty : 0;
+          // console.log(product);
+          return (
+            <div
+              className='flex flex-col rounded border-2 justify-center'
+              key={index}
+            >
+              <ProductCard
+                key={product.plu}
+                photo={product.imgUrl}
+                plu={product.plu.toString()}
+                name={product.name}
+                brand={product.brand}
+                quantity={product.qty - product.onHoldQty}
+                price={product.price}
+                cartOrderQuantity={cartQuantity}
+                onQuantityChange={(id: string, qty: number) => {
+                  onQuantityChange(id, qty);
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
     </PageWrapper>
   );

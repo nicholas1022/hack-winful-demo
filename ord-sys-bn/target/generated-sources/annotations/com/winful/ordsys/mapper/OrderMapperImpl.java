@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-05T08:53:38-0400",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.38.0.v20240325-1403, environment: Java 17.0.10 (Eclipse Adoptium)"
+    date = "2024-04-06T01:51:08-0400",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.2 (Homebrew)"
 )
 @Component
 public class OrderMapperImpl implements OrderMapper {
@@ -71,8 +71,6 @@ public class OrderMapperImpl implements OrderMapper {
         productDTO.setBrand( product.getBrand() );
         productDTO.setQty( product.getQty() );
         productDTO.setOnHoldQty( product.getOnHoldQty() );
-        productDTO.setDefaultPrice( product.getDefaultPrice() );
-        productDTO.setImgUrl( product.getImgUrl() );
 
         return productDTO;
     }
@@ -117,8 +115,6 @@ public class OrderMapperImpl implements OrderMapper {
         product.setBrand( productDTO.getBrand() );
         product.setQty( productDTO.getQty() );
         product.setOnHoldQty( productDTO.getOnHoldQty() );
-        product.setImgUrl( productDTO.getImgUrl() );
-        product.setDefaultPrice( productDTO.getDefaultPrice() );
 
         return product;
     }

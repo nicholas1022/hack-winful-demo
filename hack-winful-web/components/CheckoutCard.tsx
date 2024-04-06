@@ -2,21 +2,21 @@ import { useState } from "react";
 
 interface CheckoutCardProps {
   photo: string;
-  id: string;
+  plu: string;
   name: string;
   brand: string;
   quantity: number;
   price: number;
   orderQuantity: number;
   newPrice?: number;
-  onQuantityChange: (id: string, newQuantity: number) => void;
-  onPriceChange: (id: string, newPrice: number) => void;
+  onQuantityChange: (plu: string, newQuantity: number) => void;
+  onPriceChange: (plu: string, newPrice: number) => void;
 }
 
 export function CheckoutCard(props: CheckoutCardProps) {
   const {
     photo,
-    id,
+    plu,
     name,
     brand,
     quantity,
@@ -41,7 +41,7 @@ export function CheckoutCard(props: CheckoutCardProps) {
   // Make sure the price is more than 0
   function onChangePrice(newPrice: number) {
     setSellPrice(newPrice);
-    onPriceChange(id, newPrice);
+    onPriceChange(plu, newPrice);
     if (newPrice < 0) {
       setIsShowPriceWarning(true);
     } else {
@@ -52,7 +52,7 @@ export function CheckoutCard(props: CheckoutCardProps) {
   // Check if the quantity is positive
   function onChangeQuantity(newQuantity: number) {
     setOrderQuantity(newQuantity);
-    onQuantityChange(id, newQuantity);
+    onQuantityChange(plu, newQuantity);
     if (newQuantity <= 0) {
       setIsShowQuantityWarning(true);
     } else {
@@ -71,7 +71,7 @@ export function CheckoutCard(props: CheckoutCardProps) {
       <div className='sm: flex flex-col justify-start gap-2 w-full'>
         <div className='flex flex-row gap-4'>
           <p>ID:</p>
-          <p>{id}</p>
+          <p>{plu}</p>
         </div>
         <div className='flex flex-row gap-4'>
           <p>Name:</p>
@@ -107,7 +107,7 @@ export function CheckoutCard(props: CheckoutCardProps) {
             <input
               type='number'
               name='price'
-              id='price'
+              plu='price'
               className='block w-24 rounded-md border-0 py-2 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6'
               placeholder='0.00'
               aria-describedby='price-currency'

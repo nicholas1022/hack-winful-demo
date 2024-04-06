@@ -3,11 +3,11 @@ import { PageWrapper } from "../../../components/Layout/PageWrapper";
 import { useRouter } from "next/router";
 
 const data: Order = {
-  id: "M31001",
+  plu: "M31001",
   date: "2015-03-25",
   status: "placed",
   customerInfo: {
-    id: "JD001",
+    plu: "JD001",
     name: "John Doe",
     companyName: "Super Supermarket",
     email: "johndoe@gmail.com",
@@ -15,37 +15,37 @@ const data: Order = {
   },
   details: [
     {
-      id: "AS001",
+      plu: "AS001",
       name: "crab",
       orderQuantity: 7,
     },
     {
-      id: "MND1239",
+      plu: "MND1239",
       name: "fish",
       orderQuantity: 9,
     },
     {
-      id: "DFEI19",
+      plu: "DFEI19",
       name: "Prawns",
       orderQuantity: 3,
     },
     {
-      id: "AS121",
+      plu: "AS121",
       name: "King crab",
       orderQuantity: 100,
     },
     {
-      id: "OCT1239",
+      plu: "OCT1239",
       name: "Octopus",
       orderQuantity: 9,
     },
     {
-      id: "SFI23",
+      plu: "SFI23",
       name: "Shark Fin",
       orderQuantity: 7,
     },
     {
-      id: "PPS001",
+      plu: "PPS001",
       name: "King Prawns",
       orderQuantity: 30,
     },
@@ -53,7 +53,7 @@ const data: Order = {
 };
 
 export default function Page() {
-  const { id, date, customerInfo, details } = data;
+  const { plu, date, customerInfo, details } = data;
   const router = useRouter();
   const [orderId, setOrderId] = useState<string>("");
 
@@ -84,7 +84,7 @@ export default function Page() {
 
         <div className='flex flex-col'>
           <p className='font-bold'>Date: {date}</p>
-          <p className='font-bold'>Order: #{id}</p>
+          <p className='font-bold'>Order: #{plu}</p>
         </div>
       </div>
       <table className='my-10 table-auto w-full border-collapse border border-slate-500'>
@@ -98,8 +98,8 @@ export default function Page() {
         <tbody>
           {details.map((item) => {
             return (
-              <tr key={item.id}>
-                <td className='border border-slate-700 p-2'>{item.id}</td>
+              <tr key={item.plu}>
+                <td className='border border-slate-700 p-2'>{item.plu}</td>
                 <td className='border border-slate-700 p-2'>{item.name}</td>
                 <td className='border border-slate-700 p-2 justify-center'>
                   {item.orderQuantity}

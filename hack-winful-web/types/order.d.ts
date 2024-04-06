@@ -1,7 +1,9 @@
 interface Order {
-  id: string;
+  orderId: string;
   date: string;
   status: "placed" | "delivered";
-  customerInfo: Customer;
-  details: OrderItemInfo[];
+  address: string;
+  companyName: string;
+  contactName: string;
+  orderDetails: OrderItemInfo[];
 }
