@@ -21,10 +21,9 @@ export default function Page() {
   async function fetchInfo() {
     try {
       const result = await fetch(
-        `http://localhost:8080/api/order?id=${orderId}}`,
+        `http://localhost:8080/api/order?id=${orderId}`,
         {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
+          method: "GET"
         }
       );
       if (!result.ok) {
