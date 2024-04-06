@@ -1,4 +1,5 @@
 import { PageWrapper } from "../../components/Layout/PageWrapper";
+import { useEffect, useState } from "react";
 
 const data: Order[] = [
   {
@@ -239,6 +240,29 @@ const data: Order[] = [
 ];
 
 export default function Page() {
+  const [orders, setOrders] = useState<Array<Order>>([]);
+
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+
+  async function fetchInfo() {
+    try {
+      const result = await fetch('http://localhost:8080/api/order/page', {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!result.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const resultJson = await result.json();
+      setOrders(resultJson);
+
+    } catch (err) {
+      console.log('error', err)
+    }
+  }
+
   return (
     <PageWrapper>
       <table className='my-10 table-auto w-full border-collapse '>
@@ -250,7 +274,7 @@ export default function Page() {
           </tr>
         </thead>
         <tbody>
-          {data.map((order) => {
+          {orders.map((order) => {
             return (
               <tr>
                 <td className='border border-slate-700 p-2'>{order.id}</td>
