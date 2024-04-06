@@ -109,7 +109,7 @@ export default function Page() {
         if (cartItem.price === undefined) {
           // Find the corresponding item in the items list (assuming it's called 'items')
           const defaultItem = data.find(
-            (item) => item.plu == cartItem.product.plu
+            (item) => item.plu == cartItem.product?.plu
           );
 
           // If the item is found, update its price in the cart
@@ -262,7 +262,7 @@ export default function Page() {
             // Return the list of items if something is inside
             cart.map((cartItem) => {
               const matchedItem = data.find(
-                (item) => item.plu == cartItem.product.plu
+                (item) => item.plu == cartItem.product?.plu
               );
 
               if (matchedItem) {

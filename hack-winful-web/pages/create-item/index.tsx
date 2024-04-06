@@ -66,6 +66,10 @@ export default function Page() {
     try {
       const imgUploadRes = await uploadImg();
       const imgUploadJson = await imgUploadRes?.json();
+      var imgUrl;
+      if (imgUploadJson) {
+        imgUrl = imgUploadJson.imgUrl;
+      }
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,7 +78,7 @@ export default function Page() {
           brand: brand === "Other" ? newBrand : brand,
           defaultPrice: price,
           qty: quantity,
-          imgUrl: imgUploadJson.imgUrl,
+          imgUrl: imgUrl
         }),
       };
 
