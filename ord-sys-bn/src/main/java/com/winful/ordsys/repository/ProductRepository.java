@@ -24,6 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "update Product p1_0 set p1_0.qty = p1_0.qty - p1_0.onHoldQty, p1_0.onHoldQty = 0 where p1_0.plu = ?1")
     void confirmOnHoldQty(Long id);
 
+    @Modifying
+    @Query(value = "update Product p1_0 set p1_0.onHoldQty = p1_0.onHoldQty - ?2, p1_0.qty = p1_0.qty - ?2 where p1_0.plu = ?1")
+    void confirmOnHoldQty(Long id, Double qty);
+
     @Query(value = "select distinct brand from Product order by brand")
     List<String> findAllDistinctBrand();
 }

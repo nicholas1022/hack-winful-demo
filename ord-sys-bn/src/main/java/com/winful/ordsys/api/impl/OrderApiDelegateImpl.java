@@ -44,4 +44,10 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
         orderService.deleteOrder(id);
         return ResponseEntity.ok().build();
     }
+
+    @Override
+    public ResponseEntity<Void> orderDelivered(Long id) {
+        orderService.orderDelivered(id);
+        return ResponseEntity.ok().build();
+    }
 }
