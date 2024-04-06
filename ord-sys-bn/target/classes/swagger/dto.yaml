@@ -20,6 +20,9 @@ components:
         onHoldQty:
           type: number
           format: double
+        defaultPrice:
+          type: number
+          format: double
         imgUrl:
           type: string
     ProductImgDTO:

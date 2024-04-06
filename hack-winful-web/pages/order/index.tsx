@@ -286,7 +286,6 @@ export default function Page() {
           <tr>
             <th className='border border-slate-600'>Order ID</th>
             <th className='border border-slate-600'>Company Name</th>
-            <th className='border border-slate-600'>Delivery Date</th>
           </tr>
         </thead>
         <tbody>
@@ -297,11 +296,10 @@ export default function Page() {
                 <td className='border border-slate-700 p-2'>
                   {order.companyName}
                 </td>
-                <td className='border border-slate-700 p-2'>{order.date}</td>
-                <td className='p-2'>
+                <td className='flex flex-row p-2 gap-2 items-center'>
                   <a
                     className='underline cursor-pointer'
-                    href='/single-order/{}'
+                    href={`/order/${order.orderId}`}
                   >
                     Details
                   </a>

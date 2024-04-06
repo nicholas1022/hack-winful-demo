@@ -2,60 +2,11 @@ import { useEffect, useState } from "react";
 import { PageWrapper } from "../../../components/Layout/PageWrapper";
 import { useRouter } from "next/router";
 
-const data: Order = {
-  plu: "M31001",
-  date: "2015-03-25",
-  status: "placed",
-  customerInfo: {
-    plu: "JD001",
-    name: "John Doe",
-    companyName: "Super Supermarket",
-    email: "johndoe@gmail.com",
-    address: "9371 Dogwood St.Lavaltrie, QC J5T 3E7",
-  },
-  details: [
-    {
-      plu: "AS001",
-      name: "crab",
-      orderQuantity: 7,
-    },
-    {
-      plu: "MND1239",
-      name: "fish",
-      orderQuantity: 9,
-    },
-    {
-      plu: "DFEI19",
-      name: "Prawns",
-      orderQuantity: 3,
-    },
-    {
-      plu: "AS121",
-      name: "King crab",
-      orderQuantity: 100,
-    },
-    {
-      plu: "OCT1239",
-      name: "Octopus",
-      orderQuantity: 9,
-    },
-    {
-      plu: "SFI23",
-      name: "Shark Fin",
-      orderQuantity: 7,
-    },
-    {
-      plu: "PPS001",
-      name: "King Prawns",
-      orderQuantity: 30,
-    },
-  ],
-};
-
 export default function Page() {
-  const { plu, date, customerInfo, details } = data;
   const router = useRouter();
+  const [data, setData] = useState<Order>();
   const [orderId, setOrderId] = useState<string>("");
+  const date = new Date();
 
   useEffect(() => {
     if (router.query.orderId) {
@@ -64,8 +15,29 @@ export default function Page() {
   }, [router.query.orderId]);
 
   useEffect(() => {
-    // Fetch details of the order
+    fetchInfo();
   }, [orderId]);
+
+  async function fetchInfo() {
+    try {
+      const result = await fetch(
+        `http://localhost:8080/api/order?id=${orderId}}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!result.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const resultJson = await result.json();
+      setData(resultJson);
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  const { contactName, companyName, address, orderDetails, email } = data || {};
 
   return (
     <PageWrapper>
@@ -76,15 +48,15 @@ export default function Page() {
         <div className='flex flex-col'>
           <p className='text-4xl font-bold pb-4'>Packing Slip</p>
           <p className='font-bold'>Ship to: </p>
-          <p>{customerInfo.name}</p>
-          <p>{customerInfo.companyName}</p>
-          <p>{customerInfo.address}</p>
-          <p>{customerInfo.email}</p>
+          <p>{contactName}</p>
+          <p>{companyName}</p>
+          <p>{address}</p>
+          <p>{email}</p>
         </div>
 
         <div className='flex flex-col'>
-          <p className='font-bold'>Date: {date}</p>
-          <p className='font-bold'>Order: #{plu}</p>
+          <p className='font-bold'>Date: {date.toDateString()}</p>
+          <p className='font-bold'>Order: #{orderId}</p>
         </div>
       </div>
       <table className='my-10 table-auto w-full border-collapse border border-slate-500'>
@@ -96,17 +68,19 @@ export default function Page() {
           </tr>
         </thead>
         <tbody>
-          {details.map((item) => {
-            return (
-              <tr key={item.plu}>
-                <td className='border border-slate-700 p-2'>{item.plu}</td>
-                <td className='border border-slate-700 p-2'>{item.name}</td>
-                <td className='border border-slate-700 p-2 justify-center'>
-                  {item.orderQuantity}
-                </td>
-              </tr>
-            );
-          })}
+          {orderDetails?.map((item: OrderItemInfo) => (
+            <tr key={item.product.plu}>
+              <td className='border border-slate-700 p-2'>
+                {item.product.plu}
+              </td>
+              <td className='border border-slate-700 p-2'>
+                {item.product.name}
+              </td>
+              <td className='border border-slate-700 p-2 justify-center'>
+                {item.orderQuantity}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </PageWrapper>

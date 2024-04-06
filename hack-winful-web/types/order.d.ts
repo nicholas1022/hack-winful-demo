@@ -5,5 +5,6 @@ interface Order {
   address: string;
   companyName: string;
   contactName: string;
+  email: string;
   orderDetails: OrderItemInfo[];
 }

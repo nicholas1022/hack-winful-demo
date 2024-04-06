@@ -57,6 +57,7 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
               className='btn btn-blue rounded'
               onClick={() => {
                 onClickConfirm();
+                handleClose();
               }}
             >
               Confirm

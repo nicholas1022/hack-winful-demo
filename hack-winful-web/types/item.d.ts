@@ -4,6 +4,6 @@ interface Item {
   brand: string;
   qty: number;
   imgUrl: string;
-  price: number;
+  defaultPrice: number;
   onHoldQty: number;
 }

@@ -32,7 +32,6 @@ export default function Page() {
         throw new Error("Failed to fetch data");
       }
       const resultJson = await result.json();
-      console.log(resultJson);
       setData(resultJson);
 
       const brandsSet: Set<string> = new Set();
@@ -74,6 +73,7 @@ export default function Page() {
     } else {
       addCartItem(id);
     }
+    console.log(JSON.parse(localStorage.getItem("cart") || "[]"));
   }
 
   function addCartItem(id: string) {
@@ -167,7 +167,7 @@ export default function Page() {
                 name={product.name}
                 brand={product.brand}
                 quantity={product.qty - product.onHoldQty}
-                price={product.price}
+                price={product.defaultPrice}
                 cartOrderQuantity={cartQuantity}
                 onQuantityChange={(id: string, qty: number) => {
                   onQuantityChange(id, qty);
