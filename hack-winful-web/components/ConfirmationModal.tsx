@@ -53,7 +53,12 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
             <button className='btn btn-blue rounded' onClick={handleClose}>
               Cancel
             </button>
-            <button className='btn btn-blue rounded' onClick={() => {}}>
+            <button
+              className='btn btn-blue rounded'
+              onClick={() => {
+                onClickConfirm();
+              }}
+            >
               Confirm
             </button>
           </div>

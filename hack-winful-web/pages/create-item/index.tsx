@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageWrapper } from "../../components/Layout/PageWrapper";
 
 export default function Page() {
@@ -8,17 +8,98 @@ export default function Page() {
   const [quantity, setQuantity] = useState<number>(0);
   const [price, setPrice] = useState<number>(0);
   const [photo, setPhoto] = useState<File>();
+  const [brandList, setBrandList] = useState<string[]>([]);
 
-  //dummy brands
-  const brandList = [
-    "--Please choose an option--",
-    "brand1",
-    "brand2",
-    "brand3",
-    "brand4",
-    "brand5",
-    "Other",
-  ];
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+
+  async function fetchInfo() {
+    try {
+      const result = await fetch("http://localhost:8080/api/product/page", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!result.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const resultJson = await result.json();
+      const brandsSet = new Set<string>();
+      resultJson.forEach((product: { brand: string }) => {
+        brandsSet.add(product.brand);
+      });
+      const brands = Array.from(brandsSet);
+      setBrandList(["--Please choose an option--", ...brands, "Other"]);
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  async function uploadImg() {
+    try {
+      const formData = new FormData();
+      formData.append("img", photo);
+      const result = await fetch(
+        "http://localhost:8080/api/product/uploadImg",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!result.ok) {
+        throw new Error("Failed to upload photo");
+      }
+      return result;
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  async function createItem() {
+    try {
+      const imgUploadRes = await uploadImg();
+      const imgUploadJson = await imgUploadRes?.json();
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: itemName,
+          brand: brand === "Other" ? newBrand : brand,
+          defaultPrice: price,
+          qty: quantity,
+          imgUrl: imgUploadJson.imgUrl,
+        }),
+      };
+
+      const result = await fetch(
+        "http://localhost:8080/api/product",
+        requestOptions
+      );
+
+      console.log(result);
+      if (!result.ok) {
+        throw new Error("Failed to create item");
+      }
+
+      // Clear form fields after successful creation
+      setItemName("");
+      setBrand("");
+      setNewBrand("");
+      setQuantity(0);
+      setPrice(0);
+      setPhoto(undefined);
+
+      // Refresh brand list after successful creation
+      fetchInfo();
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  function handleSubmit(event: { preventDefault: () => void }) {
+    event.preventDefault(); // Prevent the default form submission
+    createItem(); // Call createItem function to send the data to the API
+  }
 
   // Make sure the quantity is larger or equal to 0
   function onChangeQuantity(newQuantity: number) {
@@ -44,20 +125,36 @@ export default function Page() {
       setPhoto(photo[0]);
     }
   }
+
+  // function handleSubmit(e: React.FormEvent<HTMLInputElement>) {
+  //   e.preventDefault();
+  //   console.log("submit");
+  //   const requestOptions = {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ name: itemName,
+  //                            brand: newBrand === "" ? newBrand : brand,
+  //                            defaultPrice: price,
+  //                            qty: quantity,
+  //                            imgUrl: photo
+  //                          })
+  //   };
+  //   fetch('http://localhost:8080/api/product', requestOptions)
+  //       .then(response => response.json());
+  // }
+
   return (
-    // <main className={"bg-slate-50 w-screen h-screen"}>
-    //   <div
-    //     className={
-    //       "container py-10 sm:py-15 px-10 md:py-20 px-20 lg:py-30 px-40 xl:px-60"
-    //     }
-    //   >
     <PageWrapper>
-      <form className='flex justify-centre py-14 bg-white md:px-16 lg:px-20 xl:px-25 rounded'>
+      <form
+        className='flex justify-centre py-14 bg-white md:px-16 lg:px-20 xl:px-25 rounded'
+        onSubmit={handleSubmit}
+      >
         <div className='w-full flex justify-start flex-col'>
           <p className='text-3xl font-bold'>Create Items</p>
           <section className='py-5 w-full flex justify-start flex-col gap-8'>
             <div className='inputGroup'>
               <p className='font-bold'>Item Name</p>
+
               <input
                 type='text'
                 name='item name'
@@ -81,11 +178,11 @@ export default function Page() {
                 }}
               >
                 {brandList.map((brand) => {
-                  return <option>{brand}</option>;
+                  return <option key={brand}>{brand}</option>;
                 })}
               </select>
             </div>
-            {brand == "Other" ? (
+            {brand === "Other" ? (
               <div className='inputGroup'>
                 <p className='font-bold'>Please specify</p>
                 <input
@@ -149,7 +246,11 @@ export default function Page() {
               />
             </div>
           </section>
-          <button className='btn btn-blue'>Create</button>
+          <button type='submit' className='btn btn-blue'>
+            Create
+          </button>
+
+          {/* <button className='btn btn-blue' type="submit">Create</button> */}
         </div>
       </form>
     </PageWrapper>

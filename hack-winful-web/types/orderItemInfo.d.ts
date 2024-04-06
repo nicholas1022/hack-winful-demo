@@ -1,5 +1,6 @@
 interface OrderItemInfo {
-  id: string;
-  name: string;
+  orderDetailId: string;
+  product: Item;
+  price: string;
   orderQuantity: number;
 }

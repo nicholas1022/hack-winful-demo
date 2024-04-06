@@ -1,158 +1,91 @@
+import React, { useState, useEffect } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   MRT_ColumnDef,
 } from "material-react-table";
-import { useMemo } from "react";
 import { PageWrapper } from "../../components/Layout/PageWrapper";
 
-//must be memoized or stable (useState, useMemo, defined outside of the component, etc.)
-
 interface Item {
-  id: string;
+  plu: string;
   name: string;
   brand: string;
-  quantity: number;
+  qty: number;
 }
 
-const data: Item[] = [
-  {
-    id: "AA123", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Fish A",
-    brand: "Master Yip", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 103,
-  },
-  {
-    id: "AB231", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Fish B",
-    brand: "Chans Seafood", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 23,
-  },
-  {
-    id: "ZC345", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Lobster",
-    brand: "Big Big Searfood", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 43,
-  },
-  {
-    id: "JF023", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Potato Chips",
-    brand: "Ka Lok B", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 203,
-  },
-  {
-    id: "KL209", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "King Crabs",
-    brand: "Sunny Fisher", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 12,
-  },
-  {
-    id: "AA123", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Fish A",
-    brand: "Master Yip", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 103,
-  },
-  {
-    id: "AB231", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Fish B",
-    brand: "Chans Seafood", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 23,
-  },
-  {
-    id: "ZC345", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Lobster",
-    brand: "Big Big Searfood", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 43,
-  },
-  {
-    id: "JF023", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Potato Chips",
-    brand: "Ka Lok B", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 203,
-  },
-  {
-    id: "KL209", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "King Crabs",
-    brand: "Sunny Fisher", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 12,
-  },
-  {
-    id: "AA123", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Fish A",
-    brand: "Master Yip", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 103,
-  },
-  {
-    id: "AB231", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Fish B",
-    brand: "Chans Seafood", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 23,
-  },
-  {
-    id: "ZC345", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Lobster",
-    brand: "Big Big Searfood", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 43,
-  },
-  {
-    id: "JF023", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "Potato Chips",
-    brand: "Ka Lok B", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 203,
-  },
-  {
-    id: "KL209", // key "name" matches `accessorKey` in ColumnDef down below
-    name: "King Crabs",
-    brand: "Sunny Fisher", // key "age" matches `accessorKey` in ColumnDef down below
-    quantity: 12,
-  },
-];
-
 export default function Page() {
-  //column definitions - strongly typed if you are using TypeScript (optional, but recommended)
-  const columns = useMemo<MRT_ColumnDef<Item>[]>(
-    () => [
-      {
-        accessorKey: "id", //simple recommended way to define a column
-        header: "ID",
-        enableHiding: false,
-        filterVariant: "text",
-      },
-      {
-        accessorKey: "name", //simple recommended way to define a column
-        header: "Name",
-        enableHiding: false,
-        filterVariant: "text",
-      },
-      {
-        //accessorKey: "brand", //simple recommended way to define a column
-        accessorFn: (originalRow) => originalRow.brand, // Alternative way to define accessorkey, the framework do not recognize 'brand' with simple method, use accessorFn instead
-        header: "Brand",
-        enableHiding: false,
-        filterVariant: "text", // 'Select maybe a better format, but there is a weird bug for this variant, so use text instead'
-      },
-      {
-        accessorKey: "quantity", //simple recommended way to define a column
-        header: "Quantity",
-        enableHiding: false,
-        enableColumnFilter: false,
-      },
-    ],
-    []
-  );
+  const [products, setProducts] = useState<Item[]>([]);
+
+  async function fetchProducts() {
+    try {
+      const result = await fetch("http://localhost:8080/api/product/page", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!result.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const resultJson = await result.json();
+      const products = resultJson.map(
+        (product: {
+          plu: { toString: () => any };
+          name: any;
+          brand: any;
+          qty: any;
+        }) => ({
+          plu: product.plu.toString(),
+          name: product.name,
+          brand: product.brand,
+          qty: product.qty,
+        })
+      );
+      setProducts(products);
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []); // fetch products on component mount
+
+  const columns = [
+    {
+      accessorKey: "plu",
+      header: "ID",
+      enableHiding: false,
+      filterVariant: "text",
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      enableHiding: false,
+      filterVariant: "text",
+    },
+    {
+      accessorKey: "brand",
+      header: "Brand",
+      enableHiding: false,
+      filterVariant: "text",
+    },
+    {
+      accessorKey: "qty",
+      header: "Quantity",
+      enableHiding: false,
+      enableColumnFilter: false,
+    },
+  ] as MRT_ColumnDef<Item>[];
 
   const table = useMaterialReactTable({
     columns,
-    data, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
-    enableColumnOrdering: true, //enable a feature for all columns
+    data: products,
+    enableColumnOrdering: true,
     enableEditing: true,
     editDisplayMode: "row",
     initialState: { showColumnFilters: true },
     onEditingRowSave: ({ table, values }) => {
-      //validate data
       console.log(values);
-      //save data to api
-      table.setEditingRow(null); //exit editing mode
+      table.setEditingRow(null);
     },
   });
 

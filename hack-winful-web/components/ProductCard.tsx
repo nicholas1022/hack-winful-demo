@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 
 interface ProductCardProps {
   photo: string;
-  id: string;
+  plu: string;
   name: string;
   brand: string;
   quantity: number;
   cartOrderQuantity: number;
   price: number;
-  onQuantityChange: (id: string, newQuantity: number) => void;
+  onQuantityChange: (plu: string, newQuantity: number) => void;
 }
 
 export function ProductCard(props: ProductCardProps) {
   const {
     photo,
-    id,
+    plu,
     name,
     brand,
     quantity,
@@ -49,7 +49,7 @@ export function ProductCard(props: ProductCardProps) {
   function onChangeQuantity(quantity: number) {
     if (quantity >= 0) {
       setOrderQuantity(quantity);
-      onQuantityChange(id, quantity);
+      onQuantityChange(plu, quantity);
     }
   }
 
@@ -66,7 +66,7 @@ export function ProductCard(props: ProductCardProps) {
         <div className='flex items-start flex-col col-span-3'>
           <div className='flex flex-row gap-4'>
             <p>ID:</p>
-            <p>{id}</p>
+            <p>{plu}</p>
           </div>
           <div className='flex flex-row gap-4'>
             <p>Name:</p>
