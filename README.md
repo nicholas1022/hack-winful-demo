@@ -100,9 +100,9 @@ This project combines a frontend built with Yarn and a backend powered by Spring
 ## Credits
 **Frontend**: Iden Tang
 
-**Backend**: Nicolas Lee (Backend Service), Ray Chen (Database)
+**Backend**: Nicholas Lee (Backend Service), Ray Chen (Database)
 
-**API Integration**: Iden Tang, Nicolas Lee, Jessica Chan
+**API Integration**: Iden Tang, Nicholas Lee, Jessica Chan
 
 **Documentation**: Crafted by Iden Tang with ❤️, not ChatGPT
 
@@ -112,7 +112,7 @@ Special thanks to **Winful Seafood International Ltd** for providing real life b
 
 **Iden Tang**: [Linkedin](https://www.linkedin.com/in/identang/)
 
-**Nicolas Lee**: [Linkedin](https://www.linkedin.com/in/nicholas-lee-for-wai/)
+**Nicholas Lee**: [Linkedin](https://www.linkedin.com/in/nicholas-lee-for-wai/)
 
 **Ray Chen**: [Linkedin](https://www.linkedin.com/in/raychen23/)
 
